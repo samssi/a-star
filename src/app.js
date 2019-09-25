@@ -1,13 +1,12 @@
 import "./main.css"
+import * as table from "./table.js"
 import * as R from 'ramda'
-
-const rootElement = document.getElementById("root");
 
 // 0 free slot
 // 1 obstacle
 // 8 start
 // 9 end
-const objects = [
+const initialObjects = [
     [0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0],
     [0, 0, 8, 0, 0, 0],
@@ -17,73 +16,36 @@ const objects = [
     [0, 0, 0, 0, 0, 0]
 ];
 
-const objectColors = {
-    0: "white",
-    1: "grey",
-    8: "lightgreen",
-    9: "lightblue"
+const rootElement = document.getElementById("root");
+let tableElement = table.renderTable(initialObjects, rootElement);
+
+
+const main = (objects) => {
+    rootElement.removeChild(tableElement);
+    tableElement = table.renderTable(objects, rootElement);
 }
 
-const tableColumn = (content) => {
-    const col = document.createElement("div");
-    col.innerHTML = content || "&nbsp;";
-    col.className = "column";
-    return col;
+const objectsTester = (objects) => {
+    const result = R.map(row => {
+        return R.map(  element => {
+                    if (element == 0) {
+                        return 1;
+                    }
+                    else if (element == 1) {
+                        return 0;
+                    }
+                    else {
+                        return element;
+                    }
+            }, row);
+    }, objects);
+    return result;
 }
 
-const tableRow = (contentLeft, contentMiddle, contentRight) => {
-    const row = document.createElement("div");
-    row.className = "row";
-
-    row.appendChild(tableColumn(contentLeft));
-    row.appendChild(tableColumn(contentMiddle));
-    row.appendChild(tableColumn(contentRight));
-    
-    return row;
+const update = () => {
+    objects = objectsTester(objects);
+    main(objects);
 }
 
-// f = g + h
-// g = distance from starting point
-// h = distance from end point
-const pointCell = () => {
-    const div = document.createElement("div");
-    div.appendChild(tableRow("15", "10", "15"));
-    div.appendChild(tableRow("10", "total", "10"));
-    div.appendChild(tableRow("15", "10", "15"));
-    return div;
-} 
-
-const setCellColor = (td, cellValue) => {
-    if (cellValue == 9) {
-        
-        td.appendChild(pointCell());
-    }
-    return objectColors[cellValue];
-}
-
-const createDataElement = (item) => {
-    const td = document.createElement("td");
-    td.bgColor = setCellColor(td, item);
-    return td;
-}
-
-const row = array => {
-    const tr = document.createElement("tr");
-    R.forEach(item => tr.appendChild(createDataElement(item)), array)
-    return tr;
-}
-
-const tr = () => {
-
-    const table = R.map(row, objects);
-    console.log(table);
-    return table;
-}
-
-const main = () => {
-    const table = document.createElement("table");
-    rootElement.appendChild(table);
-    R.forEach(row => table.appendChild(row), tr());
-}
-
-main()
+let objects = initialObjects;
+setInterval(update, 1000)
