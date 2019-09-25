@@ -2,10 +2,11 @@ import "./main.css"
 import * as table from "./table.js"
 import * as R from 'ramda'
 
-// 0 free slot
-// 1 obstacle
-// 8 start
-// 9 end
+const FREE = 0;
+const OBSTACLE = 1;
+const START = 8;
+const END = 9;
+
 let objects = [
     [0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0],
@@ -42,10 +43,21 @@ const objectsTester = (objects) => {
     return result;
 }
 
+const find = (object) => {
+    return [].concat(...objects.map((row, i) => row.map((item, j) => item === object ? [
+        [i, j]
+      ] : [])
+      .filter(coord => coord.length)
+     )
+    )
+}
+
+console.log(find(START))
+
 const update = () => {
     objects = objectsTester(objects);
     main(objects);
 }
 
 
-setInterval(update, 1000)
+setInterval(update, 100000)
