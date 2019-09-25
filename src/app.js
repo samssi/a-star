@@ -19,6 +19,7 @@ const objectsTester = (objects) => {
     return result;
 }
 
-console.log(renderer.find(renderer.START))
+//console.log(renderer.find(renderer.START))
+console.log(renderer.westCell(renderer.START))
 
-setInterval(() => renderer.update(objectsTester), 1000)
+setInterval(() => renderer.update(objectsTester), 1000000)

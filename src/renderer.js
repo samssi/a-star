@@ -24,13 +24,19 @@ const main = (objects) => {
     tableElement = table.renderTable(objects, rootElement);
 }
 
-export const find = (object) => {
-    return [].concat(...objects.map((row, i) => row.map((item, j) => item === object ? [
-        [i, j]
-      ] : [])
-      .filter(coord => coord.length)
-     )
-    )
+export const westCell = (fromObject) => {
+    const firstObject = find(fromObject)[0]
+    const x = firstObject[0] - 1;
+    const y = firstObject[1];
+    return [x, y];
+}
+
+export const find = (searchedObject) => {
+    return objects.reduce((acc, row, i) => [ 
+        ...acc, 
+        ...row.reduce((acc, item, j) => 
+          item === searchedObject ? [...acc, [j, i]] : acc, [])]
+      , []);
 }
 
 export const update = (func) => {
