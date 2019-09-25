@@ -6,7 +6,7 @@ import * as R from 'ramda'
 // 1 obstacle
 // 8 start
 // 9 end
-const initialObjects = [
+let objects = [
     [0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0],
     [0, 0, 8, 0, 0, 0],
@@ -17,7 +17,7 @@ const initialObjects = [
 ];
 
 const rootElement = document.getElementById("root");
-let tableElement = table.renderTable(initialObjects, rootElement);
+let tableElement = table.renderTable(objects, rootElement);
 
 
 const main = (objects) => {
@@ -47,5 +47,5 @@ const update = () => {
     main(objects);
 }
 
-let objects = initialObjects;
+
 setInterval(update, 1000)
