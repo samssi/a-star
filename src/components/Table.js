@@ -1,17 +1,17 @@
 import React from 'react';
 import * as R from 'ramda';
-import Table from './Table';
+import Cell from './Cell';
 
 const mapIndexed = R.addIndex(R.map)
 
-class GridView extends React.Component {
+class Table extends React.Component {
     constructor(props, context) {
         super(props, context);
     }
     
     renderTd(item, x, y) {
         const key = `${x},${y}`
-        const cell = <Cell key={key} plotCell={this.props.plotCell} item={item} x={x} y={y}/>;
+        const cell = <Cell key={key} {...this.props} item={item} x={x} y={y}/>;
         return cell;
     }
 
@@ -26,8 +26,8 @@ class GridView extends React.Component {
     }
 
     render() {
-        return <div><Table {...this.props} /></div>;
+        return <div>{this.renderTable(this.props.table.table)}</div>;
     }
 }
 
-export default GridView;
+export default Table;
