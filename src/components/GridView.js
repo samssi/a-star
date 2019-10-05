@@ -17,7 +17,7 @@ class GridView extends React.Component {
 
     renderTr(objects, y) {
         const tds = mapIndexed((val, x) => this.renderTd(val, x, y), objects);
-        return <tr>{tds}</tr>;
+        return <tr key={y}>{tds}</tr>;
     }
 
     renderTable() {
