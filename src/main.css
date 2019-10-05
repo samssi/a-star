@@ -2,6 +2,7 @@ body {
     margin: auto;
     width: 50%;
     padding: 10px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 table {
     margin: 0;
@@ -35,4 +36,20 @@ td, tr {
     content: "";
     display: table;
     clear: both;
+}
+
+.modeSelection {
+    margin: 0;
+    padding-top: 10px;
+}
+
+.modeSelect {
+    padding: 5px;
+    margin-left: 10px;
+    border: 1px solid black;
+}
+
+.modeSelect:hover {
+    background-color: lavender;
+    cursor: default;
 }
