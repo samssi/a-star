@@ -7,12 +7,12 @@ class GridView extends React.Component {
         super(props, context);
     }
     
-    renderTd(item) {
-        return <Cell item={item}/>;
+    renderTd(item, x, y) {
+        return <Cell item={item} x={x} y={y}/>;
     }
 
-    renderTr(objects) {
-        return <tr>{R.map(array => this.renderTd(array), objects)}</tr>;
+    renderTr(objects, y) {
+        return <tr>{R.map(array => this.renderTd(array, 0, y), objects)}</tr>;
     }
 
     renderTable() {

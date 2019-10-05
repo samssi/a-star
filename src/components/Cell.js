@@ -24,7 +24,7 @@ class Cell extends React.Component {
 
     render() {
         return (
-            <td style={objectColor(this.setCellColor(this.props.item))}>{this.props.item}</td>
+            <td style={objectColor(this.setCellColor(this.props.item))}>({this.props.x},{this.props.y})</td>
         );
     }
 }
