@@ -13,9 +13,12 @@ const initialState = {
 const store = (state = initialState, action) => {
     switch (action.type) {
         case PLOT_CELL:
-            state.table[action.payload.x][action.payload.y] = action.payload.objectType;
-            console.log(state.table)
-            return state;
+            const newTable = [...state.table]
+            newTable[action.payload.x][action.payload.y] = action.payload.objectType;
+            return {
+                ...state,
+                table: newTable
+            };
         default: 
             return state;
     }

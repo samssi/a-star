@@ -20,13 +20,13 @@ class GridView extends React.Component {
         return <tr key={x}>{tds}</tr>;
     }
 
-    renderTable() {
-        const tr = mapIndexed((val, x) => this.renderTr(val, x), this.props.table.table)
+    renderTable(table) {
+        const tr = mapIndexed((val, x) => this.renderTr(val, x), table)
         return <table><tbody>{tr}</tbody></table>
     }
 
     render() {
-        return <div>{this.renderTable()}</div>;
+        return <div>{this.renderTable(this.props.table.table)}</div>;
     }
 }
 
