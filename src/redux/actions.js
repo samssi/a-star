@@ -1,8 +1,8 @@
-import { PLOT_CELL, OBJECT_TABLE } from "./actionTypes";
+import { SELECT_CELL, OBJECT_TABLE } from "./actionTypes";
 import {START, END, OBSTACLE, FREE} from "./objectTypes";
 
 export const plotCell = (x, y, objectType) => ({
-  type: PLOT_CELL,
+  type: SELECT_CELL,
   payload: {
     x: x,
     y: y,

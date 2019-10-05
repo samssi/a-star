@@ -1,2 +1,2 @@
 export const OBJECT_TABLE = "OBJECT_TABLE";
-export const PLOT_CELL = "PLOT_CELL";
+export const SELECT_CELL = "SELECT_CELL";

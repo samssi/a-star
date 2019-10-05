@@ -1,4 +1,4 @@
-import { PLOT_CELL, OBJECT_TABLE } from "../actionTypes";
+import { SELECT_CELL, OBJECT_TABLE } from "../actionTypes";
 
 const initialState = {
     table: [[0, 0, 0, 0, 0, 0],
@@ -12,7 +12,7 @@ const initialState = {
             
 const store = (state = initialState, action) => {
     switch (action.type) {
-        case PLOT_CELL:
+        case SELECT_CELL:
             const newTable = [...state.table]
             newTable[action.payload.x][action.payload.y] = action.payload.objectType;
             return {
