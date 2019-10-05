@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactTooltip from 'react-tooltip'
 
 const objectColor = (color) => {
     return {
@@ -23,8 +24,12 @@ class Cell extends React.Component {
     }
 
     render() {
+        const coordinates = `(${this.props.x},${this.props.y})`
         return (
-            <td style={objectColor(this.setCellColor(this.props.item))}>({this.props.x},{this.props.y})</td>
+            <td data-tip={coordinates} style={objectColor(this.setCellColor(this.props.item))}>
+                <ReactTooltip />
+                {coordinates}
+            </td>
         );
     }
 }
