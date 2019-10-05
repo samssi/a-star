@@ -1,33 +1,14 @@
 import React from 'react';
-import * as R from 'ramda'
-import Cell from './Cell'
-import { connect } from "react-redux";
-
-const objectColor = (color) => {
-    return {
-        backgroundColor: color
-    }
-}
-
-const objectColors = {
-    0: "white",
-    1: "grey",
-    8: "lightgreen",
-    9: "lightblue"
-}
+import * as R from 'ramda';
+import Cell from './Cell';
 
 class GridView extends React.Component {
     constructor(props, context) {
         super(props, context);
-        //console.log(this.props.table);
-    }
-
-    setCellColor(cellValue) {
-        return objectColors[cellValue];
     }
     
     renderTd(item) {
-        return <td style={objectColor(this.setCellColor(item))}>{item}</td>;
+        return <Cell item={item}/>;
     }
 
     renderTr(objects) {
@@ -35,9 +16,8 @@ class GridView extends React.Component {
     }
 
     renderTable() {
-        const some = R.map(row => this.renderTr(row), this.props.table.table)
-        console.log(some)
-        return <table><tbody>{some}</tbody></table>
+        const tr = R.map(row => this.renderTr(row), this.props.table.table)
+        return <table><tbody>{tr}</tbody></table>
     }
 
     render() {
