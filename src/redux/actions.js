@@ -1,12 +1,12 @@
-import { PLOT, OBJECT_TABLE } from "./actionTypes";
+import { PLOT_CELL, OBJECT_TABLE } from "./actionTypes";
 import {START, END, OBSTACLE, FREE} from "./objectTypes";
 
-export const plotStart = (x, y, objectType) => ({
-  type: PLOT,
+export const plotCell = (x, y, objectType) => ({
+  type: PLOT_CELL,
   payload: {
     x: x,
     y: y,
-    type: objectType
+    objectType: objectType
   }
 });
 
