@@ -1,3 +1,4 @@
-const EDIT = "EDIT"
-const STEP = "STEP"
-const RUN = "RUN"
+export const STEP = "Step"
+export const OBSTACLE = "Obstacle"
+export const START = "Start"
+export const END = "End"

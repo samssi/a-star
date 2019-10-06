@@ -1,18 +1,22 @@
 import React from 'react';
-import * as R from 'ramda';
-import Table from './Table';
+import Mode from './Mode'
+import * as modes from '../redux/modes'
 
 class ModeSelector extends React.Component {
     constructor(props, context) {
         super(props, context);
     }
 
+    /*const STEP = "Step"
+const OBSTACLE = "Obstacle"
+const START = "Start"
+const END = "End"*/
     render() {
         return <div className="modeSelection">
-                <span className="modeSelect">Step</span>
-                <span className="modeSelect">Obstacle</span>
-                <span className="modeSelect">Start</span>
-                <span className="modeSelect">End</span>
+                <Mode {...this.props} mode={modes.STEP}/>
+                <Mode {...this.props} mode={modes.START}/>
+                <Mode {...this.props} mode={modes.END}/>
+                <Mode {...this.props} mode={modes.OBSTACLE}/>
                </div>;
     }
 }
