@@ -7,10 +7,6 @@ class ModeSelector extends React.Component {
         super(props, context);
     }
 
-    /*const STEP = "Step"
-const OBSTACLE = "Obstacle"
-const START = "Start"
-const END = "End"*/
     render() {
         return <div className="modeSelection">
                 <Editor {...this.props} objectValue={objectTypes.START.value} objectDescription={objectTypes.START.description} />

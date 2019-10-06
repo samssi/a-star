@@ -5,10 +5,6 @@ class Editor extends React.Component {
         super(props, context);
     }
 
-    translateObjectTypeIntoString(objectType) {
-        
-    }
-
     render() {
         return <span className="modeSelect">{this.props.objectDescription}</span>;
     }
