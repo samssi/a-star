@@ -1,5 +1,6 @@
 import React from 'react';
 import Editor from './Editor'
+import Toggler from './Toggler'
 import * as objectTypes from '../redux/objectTypes'
 
 class ModeSelector extends React.Component {
@@ -9,6 +10,7 @@ class ModeSelector extends React.Component {
 
     render() {
         return <div className="modeSelection">
+                <Toggler />
                 <Editor {...this.props} objectValue={objectTypes.START.value} objectDescription={objectTypes.START.description} />
                 <Editor {...this.props} objectValue={objectTypes.END.value} objectDescription={objectTypes.END.description} />
                 <Editor {...this.props} objectValue={objectTypes.OBSTACLE.value} objectDescription={objectTypes.OBSTACLE.description} />
