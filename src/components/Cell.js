@@ -8,20 +8,13 @@ const objectColor = (color) => {
     }
 }
 
-const objectColors = {
-    0: "white",
-    1: "grey",
-    8: "lightgreen",
-    9: "lightblue"
-}
-
 class Cell extends React.Component {
     constructor(props, context) {
         super(props, context)
     }
 
     setCellColor(cellValue) {
-        return objectColors[cellValue];
+        return objectTypes.findByValue(cellValue).color;
     }
 
     selectCell(x, y) {
