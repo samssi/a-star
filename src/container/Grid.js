@@ -1,6 +1,6 @@
 import GridView from "../components/GridView";
 import { connect } from "react-redux";
-import { plotCell, editType } from "../redux/actions";
+import { plotCell, editType, toggleMode } from "../redux/actions";
 
 
 const mapStateToProps = (state) => {
@@ -10,7 +10,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return { 
         plotCell: (x, y, objectType) => dispatch(plotCell(x, y, objectType)),
-        editType: (objectValue) => dispatch(editType(objectValue))
+        editType: (objectValue) => dispatch(editType(objectValue)),
+        toggleMode: (currentMode) => dispatch(toggleMode(currentMode))
     }
 }
 

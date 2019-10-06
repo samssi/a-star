@@ -1,4 +1,4 @@
-import { SELECT_CELL, EDIT_TYPE } from "../actionTypes";
+import { SELECT_CELL, EDIT_TYPE, TOGGLE_MODE } from "../actionTypes";
 import * as objectTypes from "../objectTypes";
 import * as modes from "../modes";
 
@@ -28,11 +28,15 @@ const table = (state = initialState, action) => {
         case SELECT_CELL:
             return selectCell(state, action.payload.x, action.payload.y)
         case EDIT_TYPE:
-            const newObjectType = action.payload.objectValue;
             return {
                 ...state,
-                editObjectType: newObjectType
+                editObjectType: action.payload.objectValue
             };
+        case TOGGLE_MODE:
+            return {
+                ...state,
+                mode: action.payload.mode
+            }
         default: 
             return state;
     }

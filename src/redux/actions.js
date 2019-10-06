@@ -1,5 +1,5 @@
-import { SELECT_CELL, EDIT_TYPE } from "./actionTypes";
-import {START, END, OBSTACLE, FREE} from "./objectTypes";
+import { SELECT_CELL, EDIT_TYPE, TOGGLE_MODE } from "./actionTypes";
+import * as modes from "./modes"
 
 export const plotCell = (x, y, objectType) => ({
   type: SELECT_CELL,
@@ -14,6 +14,13 @@ export const editType = (objectValue) => ({
   type: EDIT_TYPE,
   payload: {
     objectValue: objectValue
+  }
+});
+
+export const toggleMode = (currentMode) => ({
+  type: TOGGLE_MODE,
+  payload: {
+    mode: currentMode === modes.EDIT ? modes.STEP : modes.EDIT
   }
 });
 
