@@ -1,4 +1,4 @@
-export const FREE = 0;
-export const OBSTACLE = 1;
-export const START = 8;
-export const END = 9;
+export const FREE = { value: 0, description: "Free"};
+export const OBSTACLE = { value: 1, description: "Obstacle" };
+export const START = { value: 8, description: "Start" };
+export const END = { value: 9, description: "End" };

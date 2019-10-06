@@ -1,6 +1,6 @@
 import React from 'react';
-import Mode from './Mode'
-import * as modes from '../redux/modes'
+import Editor from './Editor'
+import * as objectTypes from '../redux/objectTypes'
 
 class ModeSelector extends React.Component {
     constructor(props, context) {
@@ -13,10 +13,10 @@ const START = "Start"
 const END = "End"*/
     render() {
         return <div className="modeSelection">
-                <Mode {...this.props} mode={modes.STEP}/>
-                <Mode {...this.props} mode={modes.START}/>
-                <Mode {...this.props} mode={modes.END}/>
-                <Mode {...this.props} mode={modes.OBSTACLE}/>
+                <Editor {...this.props} objectValue={objectTypes.START.value} objectDescription={objectTypes.START.description} />
+                <Editor {...this.props} objectValue={objectTypes.END.value} objectDescription={objectTypes.END.description} />
+                <Editor {...this.props} objectValue={objectTypes.OBSTACLE.value} objectDescription={objectTypes.OBSTACLE.description} />
+                <Editor {...this.props} objectValue={objectTypes.FREE.value} objectDescription={objectTypes.FREE.description} />
                </div>;
     }
 }

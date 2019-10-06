@@ -10,10 +10,4 @@ export const plotCell = (x, y, objectType) => ({
   }
 });
 
-export const objectTable = (table) => ({
-    type: OBJECT_TABLE,
-    payload: {
-        table: table
-    }
-});
 
