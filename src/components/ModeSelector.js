@@ -1,6 +1,7 @@
 import React from 'react';
 import Editor from './Editor'
 import ModeToggler from './ModeToggler'
+import * as R from 'ramda';
 import * as objectTypes from '../redux/objectTypes'
 import * as modes from '../redux/modes'
 
@@ -10,15 +11,18 @@ class ModeSelector extends React.Component {
     }
 
     renderRunner() {
-        return <span></span>
+        return <span>
+
+        </span>
+    }
+
+    renderObjectTypes() {
+        return R.map(element => <Editor key={element.value} {...this.props} objectValue={element.value} objectDescription={element.description} objectColor={element.color}/>, objectTypes.allTypes);
     }
 
     renderEditor() {
         return <span>
-            <Editor {...this.props} objectValue={objectTypes.START.value} objectDescription={objectTypes.START.description} objectColor={objectTypes.START.color}/>
-            <Editor {...this.props} objectValue={objectTypes.END.value} objectDescription={objectTypes.END.description} objectColor={objectTypes.END.color}/>
-            <Editor {...this.props} objectValue={objectTypes.OBSTACLE.value} objectDescription={objectTypes.OBSTACLE.description} objectColor={objectTypes.OBSTACLE.color}/>
-            <Editor {...this.props} objectValue={objectTypes.FREE.value} objectDescription={objectTypes.FREE.description} objectColor={objectTypes.FREE.color}/>
+            {this.renderObjectTypes()}
         </span>       
     }
 
