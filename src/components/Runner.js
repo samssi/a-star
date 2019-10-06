@@ -6,8 +6,13 @@ class Runner extends React.Component {
     }
 
     render() {
-        return <span style={this.selected()} className="modeSelect" onClick={() => this.props.editType(this.props.objectValue)} >{this.props.objectDescription}</span>;
+        return <span>
+                 <span className="modeSelect">Full speed</span>
+                 <span className="modeSelect">Next step</span>
+                 <span className="modeSelect">Every 500ms</span>
+               </span>
+                
     }
 }
 
-export default Editor;
+export default Runner;

@@ -1,9 +1,10 @@
 import React from 'react';
-import Editor from './Editor'
-import ModeToggler from './ModeToggler'
+import Editor from './Editor';
+import Runner from './Runner';
+import ModeToggler from './ModeToggler';
 import * as R from 'ramda';
-import * as objectTypes from '../redux/objectTypes'
-import * as modes from '../redux/modes'
+import * as objectTypes from '../redux/objectTypes';
+import * as modes from '../redux/modes';
 
 class ModeSelector extends React.Component {
     constructor(props, context) {
@@ -11,9 +12,7 @@ class ModeSelector extends React.Component {
     }
 
     renderRunner() {
-        return <span>
-
-        </span>
+        return <Runner />
     }
 
     renderObjectTypes() {
@@ -27,7 +26,7 @@ class ModeSelector extends React.Component {
     }
 
     renderMode() {
-        return this.props.table.mode === modes.STEP ? this.renderRunner() : this.renderEditor()
+        return this.props.table.mode === modes.RUN ? this.renderRunner() : this.renderEditor()
     }
 
     render() {
