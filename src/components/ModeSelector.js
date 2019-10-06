@@ -30,7 +30,6 @@ class ModeSelector extends React.Component {
         return <div className="modeSelection">
                 <ModeToggler {...this.props} />
                 {this.renderMode()}
-                
                </div>;
     }
 }
