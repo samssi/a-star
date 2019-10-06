@@ -12,7 +12,7 @@ class Editor extends React.Component {
     }
 
     selected() {
-        return this.props.table.editObjectType === this.props.objectValue ? selectedStyle("green") : selectedStyle("white");
+        return this.props.table.editObjectType === this.props.objectValue ? selectedStyle(this.props.objectColor) : selectedStyle("white");
     }
 
     render() {
