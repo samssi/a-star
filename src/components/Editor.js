@@ -6,7 +6,7 @@ class Editor extends React.Component {
     }
 
     render() {
-        return <span className="modeSelect">{this.props.objectDescription}</span>;
+        return <span className="modeSelect" onClick={() => this.props.editType(this.props.objectValue)} >{this.props.objectDescription}</span>;
     }
 }
 

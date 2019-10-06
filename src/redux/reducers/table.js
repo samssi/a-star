@@ -1,4 +1,4 @@
-import { SELECT_CELL, OBJECT_TABLE } from "../actionTypes";
+import { SELECT_CELL, EDIT_TYPE } from "../actionTypes";
 import * as objectTypes from "../objectTypes";
 import * as modes from "../modes";
 
@@ -11,7 +11,7 @@ const initialState = {
             [0, 0, 0, 0, 9, 0],
             [0, 0, 0, 0, 0, 0]],
     mode: modes.EDIT,
-    editObjectType: objectTypes.OBSTACLE
+    editObjectType: objectTypes.FREE.value
 }
 
 const selectCell = (state,x, y) => {
@@ -27,6 +27,12 @@ const table = (state = initialState, action) => {
     switch (action.type) {
         case SELECT_CELL:
             return selectCell(state, action.payload.x, action.payload.y)
+        case EDIT_TYPE:
+            const newObjectType = action.payload.objectValue;
+            return {
+                ...state,
+                editObjectType: newObjectType
+            };
         default: 
             return state;
     }
