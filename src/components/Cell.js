@@ -9,7 +9,9 @@ const objectColor = (color) => {
         textAlign: "center",
         overflow: "hidden",
         whiteSpace: "nowrap",
-        backgroundColor: color
+        backgroundColor: color,
+        width: "59px",
+        height: "59px"
     }
 }
 
@@ -28,9 +30,10 @@ class Cell extends React.Component {
 
     render() {
         const coordinates = `(${this.props.x},${this.props.y})`;
+
         return (
             <td data-tip={coordinates} onClick={() => this.selectCell(this.props.x, this.props.y)} style={objectColor(this.setCellColor(this.props.item))}>
-              <CellValues/>
+              <CellValues {...this.props} />
               <ReactTooltip />
             </td>
         );
