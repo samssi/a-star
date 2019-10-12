@@ -1,6 +1,7 @@
 import {SELECT_CELL, EDIT_TYPE, TOGGLE_MODE, NEXT_STEP} from "../actionTypes";
 import * as objectTypes from "../objectTypes";
 import * as modes from "../modes";
+import * as astar from "../astar"
 
 const initialState = {
     table: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -43,7 +44,7 @@ const table = (state = initialState, action) => {
                 mode: action.payload.mode
             };
       case NEXT_STEP:
-        console.log('Next step...')
+        astar.nextStep([...state.table])
         return {
           ...state
         };
