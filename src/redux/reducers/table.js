@@ -1,4 +1,4 @@
-import { SELECT_CELL, EDIT_TYPE, TOGGLE_MODE } from "../actionTypes";
+import {SELECT_CELL, EDIT_TYPE, TOGGLE_MODE, NEXT_STEP} from "../actionTypes";
 import * as objectTypes from "../objectTypes";
 import * as modes from "../modes";
 
@@ -41,7 +41,12 @@ const table = (state = initialState, action) => {
             return {
                 ...state,
                 mode: action.payload.mode
-            }
+            };
+      case NEXT_STEP:
+        console.log('Next step...')
+        return {
+          ...state
+        };
         default: 
             return state;
     }

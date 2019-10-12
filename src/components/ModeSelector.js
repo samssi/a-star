@@ -12,7 +12,7 @@ class ModeSelector extends React.Component {
     }
 
     renderRunner() {
-        return <Runner />
+        return <Runner {...this.props} />
     }
 
     renderObjectTypes() {

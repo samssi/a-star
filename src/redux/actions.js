@@ -1,4 +1,4 @@
-import { SELECT_CELL, EDIT_TYPE, TOGGLE_MODE } from "./actionTypes";
+import {SELECT_CELL, EDIT_TYPE, TOGGLE_MODE, NEXT_STEP} from "./actionTypes";
 import * as modes from "./modes"
 
 export const plotCell = (x, y, objectType) => ({
@@ -24,3 +24,6 @@ export const toggleMode = (currentMode) => ({
   }
 });
 
+export const nextStep = () => ({
+  type: NEXT_STEP
+});
