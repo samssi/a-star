@@ -5,9 +5,6 @@ import Cell from './Cell';
 const tableStyle = {
     margin: 0,
     padding: 0,
-    fontSize: "8px",
-    width: "100%",
-    height: "50%",
     border: "1px solid black",
     borderCollapse: "collapse",
     top: 0,

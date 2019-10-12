@@ -1,6 +1,7 @@
 import React from "react";
 import ReactTooltip from "react-tooltip";
 import * as objectTypes from "../redux/objectTypes";
+import CellValues from "./CellValues"
 
 const objectColor = (color) => {
     return {
@@ -29,8 +30,8 @@ class Cell extends React.Component {
         const coordinates = `(${this.props.x},${this.props.y})`;
         return (
             <td data-tip={coordinates} onClick={() => this.selectCell(this.props.x, this.props.y)} style={objectColor(this.setCellColor(this.props.item))}>
-                <ReactTooltip />
-                {coordinates}
+              <CellValues/>
+              <ReactTooltip />
             </td>
         );
     }
