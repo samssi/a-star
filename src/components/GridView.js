@@ -3,7 +3,6 @@ import Table from './Table';
 import ModeSelector from './ModeSelector'
 
 const gridStyle = {
-  width: "20%",
   margin: "0 auto"
 };
 
