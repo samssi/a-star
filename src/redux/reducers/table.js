@@ -17,7 +17,11 @@ const initialState = {
             [0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
     mode: modes.EDIT,
-    editObjectType: objectTypes.FREE.value
+    editObjectType: objectTypes.FREE.value,
+    currentPosition: {
+      x: -1,
+      y: -1
+    }
 }
 
 const selectCell = (state,x, y) => {
@@ -44,7 +48,7 @@ const table = (state = initialState, action) => {
                 mode: action.payload.mode
             };
       case NEXT_STEP:
-        astar.nextStep([...state.table])
+        astar.nextStep(state.table, state.currentPosition);
         return {
           ...state
         };
