@@ -4,7 +4,7 @@ import * as objectTypes from "../redux/objectTypes";
 const contentStyle = {
   fontSize: "10px",
   textAlign: "center"
-}
+};
 
 class CellValues extends React.Component {
   constructor(props, context) {

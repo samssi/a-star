@@ -1,7 +1,11 @@
 import React from 'react';
-import * as R from 'ramda';
 import Table from './Table';
 import ModeSelector from './ModeSelector'
+
+const gridStyle = {
+  width: "20%",
+  margin: "0 auto"
+};
 
 class GridView extends React.Component {
     constructor(props, context) {
@@ -9,7 +13,7 @@ class GridView extends React.Component {
     }
 
     render() {
-        return <div>
+        return <div style={gridStyle}>
                  <Table {...this.props} />
                  <ModeSelector {...this.props} />
                </div>;
