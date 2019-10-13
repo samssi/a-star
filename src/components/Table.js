@@ -22,17 +22,17 @@ class Table extends React.Component {
 
     renderTd(item, x, y) {
         const key = `${x},${y}`
-        const cell = <Cell key={key} {...this.props} item={item} x={x} y={y}/>;
+        const cell = <Cell key={key} {...this.props} item={item} x={x} y={y} />;
         return cell;
     }
 
-    renderTr(objects, x) {
-        const tds = mapIndexed((val, y) => this.renderTd(val, x, y), objects);
-        return <tr key={x}>{tds}</tr>;
+    renderTr(items, y) {
+        const tds = mapIndexed((item, x) => this.renderTd(item, x, y), items);
+        return <tr key={y}>{tds}</tr>;
     }
 
     renderTable(table) {
-        const tr = mapIndexed((val, x) => this.renderTr(val, x), table)
+        const tr = mapIndexed((val, y) => this.renderTr(val, y), table);
         return <table style={tableStyle}><tbody>{tr}</tbody></table>
     }
 

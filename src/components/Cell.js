@@ -25,7 +25,7 @@ class Cell extends React.Component {
     }
 
     selectCell(x, y) {
-        this.props.plotCell(x, y, objectTypes.OBSTACLE);
+        this.props.plotCell(x, y);
     }
 
     render() {

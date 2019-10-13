@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return { 
-        plotCell: (x, y, objectType) => dispatch(plotCell(x, y, objectType)),
+        plotCell: (x, y) => dispatch(plotCell(x, y)),
         editType: (objectValue) => dispatch(editType(objectValue)),
         toggleMode: (currentMode) => dispatch(toggleMode(currentMode)),
         nextStep: () => dispatch(nextStep())

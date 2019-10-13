@@ -1,12 +1,11 @@
 import {SELECT_CELL, EDIT_TYPE, TOGGLE_MODE, NEXT_STEP} from "./actionTypes";
 import * as modes from "./modes"
 
-export const plotCell = (x, y, objectType) => ({
+export const plotCell = (x, y) => ({
   type: SELECT_CELL,
   payload: {
     x: x,
-    y: y,
-    objectType: objectType
+    y: y
   }
 });
 

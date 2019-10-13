@@ -24,9 +24,9 @@ const initialState = {
     }
 }
 
-const selectCell = (state,x, y) => {
+const selectCell = (state, x, y) => {
     const newTable = [...state.table]
-    newTable[x][y] = state.editObjectType;
+    newTable[y][x] = state.editObjectType;
     return {
         ...state,
         table: newTable
@@ -36,7 +36,7 @@ const selectCell = (state,x, y) => {
 const table = (state = initialState, action) => {
     switch (action.type) {
         case SELECT_CELL:
-            return selectCell(state, action.payload.x, action.payload.y)
+            return selectCell(state, action.payload.x, action.payload.y);
         case EDIT_TYPE:
             return {
                 ...state,

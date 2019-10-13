@@ -5,8 +5,8 @@ const loopIndexed = R.addIndex(R.forEach);
 
 const searchForStartPosition = (table) => {
   console.log("searching for start position");
-  loopIndexed((val, x) => {
-    loopIndexed((val, y) => {
+  loopIndexed((val, y) => {
+    loopIndexed((val, x) => {
       if(val === objectTypes.START.value) {
         console.log(`found: (x:${x}, y:${y})`);
       }
