@@ -6,13 +6,13 @@ import {selectCell} from "../../algorithm/cellTool";
 
 const initialState = {
     table: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 8, 0, 8, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
-    mode: modes.EDIT,
+    mode: modes.RUN,
     editObjectType: objectTypes.FREE.value,
     currentPosition: {
       x: -1,
