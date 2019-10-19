@@ -1,23 +1,37 @@
 import * as R from "ramda";
 import * as objectTypes from "../redux/objectTypes"
+import {START} from "../redux/objectTypes";
 
-const loopIndexed = R.addIndex(R.forEach);
+const loopIndexed = R.addIndex(R.map);
 
-const searchForStartPosition = (table) => {
-  console.log("searching for start position");
+const matchObjectType = (n) => n === objectTypes.START.value;
+
+export const searchX = (items, y) => {
+  return R.map((val) => {
+      x = R.findIndex(R.equals(objectTypes.START.value), item);
+      console.log(x)
+      return { x: x, y: y } },
+      items);
+
+  /*filterIndexed((matchObjectType, x) => {
+    console.log(`found: (x:${x}, y:${y})`);
+    return { x: x, y: y }
+  }, y);*/
+};
+
+export const searchTable = (table) => {
   loopIndexed((val, y) => {
-    loopIndexed((val, x) => {
-      if(val === objectTypes.START.value) {
-        console.log(`found: (x:${x}, y:${y})`);
-      }
-    }, val);
+    console.log(searchX(val, y));
   }, table);
+};
+
+export const searchForStartPosition = (table) => {
+  console.log("searching for start position");
+  console.log(searchTable(table))
 };
 
 export const nextStep = (table, position) => {
   console.log('>> next step >>');
   console.log(position);
-  if (position.x < 0 && position.y < 0) {
-    searchForStartPosition(table)
-  }
+  console.log(searchForStartPosition(table))
 };

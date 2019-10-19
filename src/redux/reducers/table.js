@@ -2,19 +2,15 @@ import {SELECT_CELL, EDIT_TYPE, TOGGLE_MODE, NEXT_STEP} from "../actionTypes";
 import * as objectTypes from "../objectTypes";
 import * as modes from "../modes";
 import * as astar from "../../algorithm/astar"
+import {selectCell} from "../../algorithm/cellTool";
 
 const initialState = {
     table: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 8, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
     mode: modes.EDIT,
     editObjectType: objectTypes.FREE.value,
@@ -22,16 +18,7 @@ const initialState = {
       x: -1,
       y: -1
     }
-}
-
-const selectCell = (state, x, y) => {
-    const newTable = [...state.table]
-    newTable[y][x] = state.editObjectType;
-    return {
-        ...state,
-        table: newTable
-    };
-}
+};
 
 const table = (state = initialState, action) => {
     switch (action.type) {
@@ -55,6 +42,6 @@ const table = (state = initialState, action) => {
         default: 
             return state;
     }
-}
+};
 
 export default table;
