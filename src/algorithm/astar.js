@@ -1,28 +1,32 @@
 import * as R from "ramda";
-import * as objectTypes from "../redux/objectTypes"
-import {START} from "../redux/objectTypes";
+import {START, END, FREE, OBSTACLE} from "../redux/objectTypes";
 
 const loopIndexed = R.addIndex(R.map);
 
-export const searchX = (items, y) => {
-  return R.findIndex(R.equals(8))(items);
-};
-
-export const searchTable = (table) => {
-  return R.pipe(loopIndexed((xs, i) => R.pipe(
-    R.map(R.equals(START.value)), 
-    loopIndexed((x, j) => x && [j, i]), 
+export const searchTable = (table, objectType) => {
+  return R.pipe(loopIndexed((xItems, y) => R.pipe(
+    R.map(R.equals(objectType.value)), 
+    loopIndexed((yItems, x) => yItems && [x, y]), 
     R.reject(R.equals(false))
-  )(xs)), R.unnest)(table);
+  )(xItems)), R.unnest)(table);
 };
 
 export const searchForStartPosition = (table) => {
   console.log("searching for start position");
-  console.log(searchTable(table))
+  console.log(searchTable(table, START))
+  console.log(searchTable(table, OBSTACLE))
 };
 
 export const nextStep = (table, position) => {
   console.log('>> next step >>');
-  //console.log(position);
   console.log(searchForStartPosition(table))
+};
+
+export const selectCell = (state, x, y) => {
+  const newTable = [...state.table];
+  newTable[y][x] = state.editObjectType;
+  return {
+    ...state,
+    table: newTable
+  };
 };
