@@ -11,22 +11,11 @@ export const searchTable = (table, objectType) => {
   )(xItems)), R.unnest)(table);
 };
 
-export const searchForStartPosition = (table) => {
-  console.log("searching for start position");
-  console.log(searchTable(table, START))
-  console.log(searchTable(table, OBSTACLE))
-};
-
 export const nextStep = (table, position) => {
-  console.log('>> next step >>');
-  console.log(searchForStartPosition(table))
-};
-
-export const selectCell = (state, x, y) => {
-  const newTable = [...state.table];
-  newTable[y][x] = state.editObjectType;
-  return {
-    ...state,
-    table: newTable
-  };
+  if (position[0] < 0 || position[1] < 0) {
+    console.log("huu")
+    return searchTable(table, START);
+  }
+  console.log("haa")
+  return [1,1]
 };

@@ -13,6 +13,7 @@ const initialState = {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
     mode: modes.RUN,
     editObjectType: objectTypes.FREE.value,
+    playerPosition: [-1, -1],
     currentPosition: {
       x: -1,
       y: -1
@@ -39,9 +40,9 @@ const table = (state = initialState, action) => {
                 mode: action.payload.mode
             };
       case NEXT_STEP:
-        astar.nextStep(state.table, state.currentPosition);
         return {
-          ...state
+          ...state,
+          playerPosition: astar.nextStep(state.table, state.playerPosition)
         };
         default: 
             return state;
