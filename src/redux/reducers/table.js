@@ -2,7 +2,6 @@ import {SELECT_CELL, EDIT_TYPE, TOGGLE_MODE, NEXT_STEP} from "../actionTypes";
 import * as objectTypes from "../objectTypes";
 import * as modes from "../modes";
 import * as astar from "../../algorithm/astar"
-import {selectCell} from "../../algorithm/astar";
 
 const initialState = {
     table: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -23,7 +22,12 @@ const initialState = {
 const table = (state = initialState, action) => {
     switch (action.type) {
         case SELECT_CELL:
-            return selectCell(state, action.payload.x, action.payload.y);
+            const newTable = [...state.table];
+            newTable[action.payload.y][action.payload.x] = state.editObjectType;
+            return {
+                ...state,
+                table: newTable
+            };
         case EDIT_TYPE:
             return {
                 ...state,
