@@ -2,6 +2,7 @@ import {SELECT_CELL, EDIT_TYPE, TOGGLE_MODE, NEXT_STEP} from "../actionTypes";
 import * as objectTypes from "../objectTypes";
 import * as modes from "../modes";
 import * as astar from "../../algorithm/astar"
+import * as stepState from "../stepState"
 
 const initialState = {
     table: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -13,6 +14,7 @@ const initialState = {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
     mode: modes.RUN,
     editObjectType: objectTypes.FREE.value,
+    stepState: stepState.INIT,
     stepInfo: "Astar ready!",
     startPosition: [-1, -1],
     endPosition: [-1, -1],
@@ -44,7 +46,7 @@ const table = (state = initialState, action) => {
       case NEXT_STEP:
         return {
           ...state,
-          ...astar.nextStep(state.table, state.startPosition, state.endPosition)
+          ...astar.nextStep(state)
         };
         default: 
             return state;

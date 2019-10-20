@@ -1,5 +1,6 @@
 import * as R from "ramda";
 import {START, END, FREE, OBSTACLE} from "../redux/objectTypes";
+import * as stepState from "../redux/stepState"
 
 const loopIndexed = R.addIndex(R.map);
 
@@ -11,8 +12,6 @@ export const searchTable = (table, objectType) => {
   )(xItems)), R.unnest)(table);
 };
 
-const isPositionEmpty = (position) => position[0] < 0 && position [1] < 0;
-
 const searchStartAndEndPositionsFromTable = (table) => {
   console.log("init start");
     const newStartPosition = { 
@@ -22,11 +21,12 @@ const searchStartAndEndPositionsFromTable = (table) => {
     return newStartPosition;
 }
 
-export const nextStep = (table, startPosition, endPosition) => {
-  if (isPositionEmpty(startPosition) && isPositionEmpty(endPosition)) {
-    const positions = searchStartAndEndPositionsFromTable(table)
+export const nextStep = (state) => {
+  if (state.stepState === stepState.INIT) {
+    const positions = searchStartAndEndPositionsFromTable(state.table)
     return {
       stepInfo: `Found start position: ${positions.startPosition}, end position: ${positions.endPosition}`,
+      stepState: stepState.H_COST,
       ...positions
     };
   }
