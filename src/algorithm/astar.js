@@ -11,11 +11,19 @@ export const searchTable = (table, objectType) => {
   )(xItems)), R.unnest)(table);
 };
 
-export const nextStep = (table, position) => {
-  if (position[0] < 0 || position[1] < 0) {
-    console.log("huu")
-    return searchTable(table, START);
+const isPositionEmpty = (position) => position[0] < 0 && position [1] < 0;
+
+export const nextStep = (table, startPosition, endPosition) => {
+  if (isPositionEmpty(startPosition) && isPositionEmpty(endPosition)) {
+    console.log("init start");
+    const newStartPosition = { 
+      startPosition: searchTable(table, START), 
+      endPosition: searchTable(table, END)
+    };
+    return newStartPosition;
   }
-  console.log("haa")
-  return [1,1]
+  console.log("init done")
+  console.log(startPosition)
+  console.log(endPosition)
+  return { }
 };
