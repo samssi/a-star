@@ -13,17 +13,23 @@ export const searchTable = (table, objectType) => {
 
 const isPositionEmpty = (position) => position[0] < 0 && position [1] < 0;
 
-export const nextStep = (table, startPosition, endPosition) => {
-  if (isPositionEmpty(startPosition) && isPositionEmpty(endPosition)) {
-    console.log("init start");
+const searchStartAndEndPositionsFromTable = (table) => {
+  console.log("init start");
     const newStartPosition = { 
       startPosition: searchTable(table, START), 
       endPosition: searchTable(table, END)
     };
     return newStartPosition;
+}
+
+export const nextStep = (table, startPosition, endPosition) => {
+  if (isPositionEmpty(startPosition) && isPositionEmpty(endPosition)) {
+    const positions = searchStartAndEndPositionsFromTable(table)
+    return {
+      stepInfo: `Found start position: ${positions.startPosition}, end position: ${positions.endPosition}`,
+      ...positions
+    };
   }
-  console.log("init done")
-  console.log(startPosition)
-  console.log(endPosition)
+
   return { }
 };

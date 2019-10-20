@@ -5,7 +5,7 @@ import * as astar from "../../algorithm/astar"
 
 const initialState = {
     table: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 8, 0, 8, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -13,6 +13,7 @@ const initialState = {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
     mode: modes.RUN,
     editObjectType: objectTypes.FREE.value,
+    stepInfo: "Astar ready!",
     startPosition: [-1, -1],
     endPosition: [-1, -1],
     currentPosition: {
@@ -41,10 +42,9 @@ const table = (state = initialState, action) => {
                 mode: action.payload.mode
             };
       case NEXT_STEP:
-        const nextStep = astar.nextStep(state.table, state.startPosition, state.endPosition);
         return {
           ...state,
-          ...nextStep
+          ...astar.nextStep(state.table, state.startPosition, state.endPosition)
         };
         default: 
             return state;

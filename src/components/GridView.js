@@ -1,6 +1,7 @@
 import React from 'react';
 import Table from './Table';
-import ModeSelector from './ModeSelector'
+import ModeSelector from './ModeSelector';
+import StepInfo from './StepInfo';
 
 const gridStyle = {
   margin: "0 auto"
@@ -15,6 +16,7 @@ class GridView extends React.Component {
         return <div style={gridStyle}>
                  <Table {...this.props} />
                  <ModeSelector {...this.props} />
+                 <StepInfo {...this.props} />
                </div>;
     }
 }
