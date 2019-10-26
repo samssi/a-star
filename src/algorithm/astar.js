@@ -1,13 +1,14 @@
 import * as R from "ramda";
 import {START, END, FREE, OBSTACLE} from "../redux/objectTypes";
 import * as stepState from "../redux/stepState"
+import * as Immutable from "immutable"
 
-const loopIndexed = R.addIndex(R.map);
+const mapIndexed = R.addIndex(R.map);
 
 export const searchTable = (table, objectType) => {
-  return R.pipe(loopIndexed((xItems, y) => R.pipe(
+  return R.pipe(mapIndexed((xItems, y) => R.pipe(
     R.map(R.equals(objectType.value)), 
-    loopIndexed((yItems, x) => yItems && [x, y]), 
+    mapIndexed((yItems, x) => yItems && [x, y]), 
     R.reject(R.equals(false))
   )(xItems)), R.unnest)(table);
 };
@@ -30,27 +31,52 @@ const returnStartEndPositions = (state) => {
   };
 }
 
-const moveSouth = (position) => {
+const moveSouth = (position, path) => {
   const newPosition = R.clone(position);
+
   newPosition[0][1] = newPosition[0][1] + 1;
-  return newPosition;
+  const newPath = path.push(newPosition);
+  return { newPosition: newPosition, path: newPath };
+}
+
+const translateArrayToXY = (arrayElement) => {
+  return { x: arrayElement[0][1], y: arrayElement[0][0]}
+}
+
+const updateMovesToTable = (state, path) => {
+  const newTable = R.clone(state.table);
+  R.forEach((item) => {
+    const xy = translateArrayToXY(item)
+    const element = newTable[xy.x][xy.y];
+    if(element === FREE.value) {
+      return newTable[xy.x][xy.y] = 2;
+    }
+  }, path);
+  
+  console.log(newTable);
+  
+  return newTable;
 }
 
 const calculateHCost = (state) => {
   const currentPosition = R.clone(state.startPosition);
   const endPosition = R.clone(state.endPosition);
-
-  console.log(endPosition);
+  const path = Immutable.List();
   
-  const recurseToEnd = (cost, position, endPosition) => {
-    if (R.equals(position, endPosition)) return cost;
-    return recurseToEnd(cost + 10, moveSouth(position), endPosition); 
+  const recurseToEnd = (cost, position, endPosition, path) => {
+    if (R.equals(position, endPosition)) {
+      return { cost: cost, path: path };
+    }
+    const move = moveSouth(position, path);
+    return recurseToEnd(cost + 10, move.newPosition, endPosition, move.path); 
   }
   
-  const cost = recurseToEnd(0, currentPosition, endPosition);
+  const move = recurseToEnd(0, currentPosition, endPosition, path);
+  const newTable = updateMovesToTable(state, move.path);
   
   return {
-    stepInfo: `Calculated H cost of ${cost} for position: ${state.currentPosition}` 
+    table: newTable,
+    stepInfo: `Calculated H cost of ${move.cost} for position: ${state.currentPosition}`
   }
 }
 

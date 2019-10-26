@@ -10,9 +10,9 @@ const initialState = {
             [0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
     mode: modes.RUN,
     editObjectType: objectTypes.FREE.value,
     stepState: stepState.INIT,
@@ -40,7 +40,7 @@ const table = (state = initialState, action) => {
             return {
                 ...state,
                 stepState: stepState.INIT,
-                mode: action.payload.mode
+                mode: action.payload.mode === modes.EDIT ? modes.RUN : modes.EDIT
             };
       case NEXT_STEP:
         return {

@@ -19,7 +19,7 @@ export const editType = (objectValue) => ({
 export const toggleMode = (currentMode) => ({
   type: TOGGLE_MODE,
   payload: {
-    mode: currentMode === modes.EDIT ? modes.RUN : modes.EDIT
+    mode: currentMode
   }
 });
 
