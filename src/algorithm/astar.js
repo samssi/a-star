@@ -64,7 +64,7 @@ const transformXMoves = (value) => {
   }
   else if (value < 0) {
     return {
-      direction: direction.E,
+      direction: direction.W,
       distance: Math.abs(value)
     }
   }
@@ -144,10 +144,11 @@ const executeMoves = (moves, position) => {
   return pathCost;
 }
 
-const calculateHCost2 = (state) => {
+const calculateHCost = (state) => {
   const startPosition = R.clone(state.startPosition);
   const endPosition = R.clone(state.endPosition);
   const distance = calculateDistanceBetween(startPosition, endPosition);
+  console.log(distance)
   
   const xMoves = transformIntoMoves(distance.x, X);
   const yMoves = transformIntoMoves(distance.y, Y);
@@ -169,7 +170,6 @@ export const nextStep = (state) => {
     case stepState.INIT:
       return returnStartEndPositions(state);
     case stepState.H_COST:
-      //return calculateHCost(state)
-      return calculateHCost2(state);
+      return calculateHCost(state)
   }  
 };
