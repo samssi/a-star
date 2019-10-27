@@ -15,8 +15,8 @@ export const searchTable = (table, objectType) => {
 
 const searchStartAndEndPositionsFromTable = (table) => {
     const newStartPosition = { 
-      startPosition: searchTable(table, START), 
-      endPosition: searchTable(table, END)
+      startPosition: searchTable(table, START)[0], 
+      endPosition: searchTable(table, END)[0]
     };
     return newStartPosition;
 }
@@ -34,13 +34,13 @@ const returnStartEndPositions = (state) => {
 const moveSouth = (position, path) => {
   const newPosition = R.clone(position);
 
-  newPosition[0][1] = newPosition[0][1] + 1;
+  newPosition[1] = newPosition[1] + 1;
   const newPath = path.push(newPosition);
   return { newPosition: newPosition, path: newPath };
 }
 
 const translateArrayToXY = (arrayElement) => {
-  return { x: arrayElement[0][1], y: arrayElement[0][0]}
+  return { x: arrayElement[1], y: arrayElement[0]}
 }
 
 const updateMovesToTable = (state, path) => {
@@ -52,8 +52,6 @@ const updateMovesToTable = (state, path) => {
       return newTable[xy.x][xy.y] = 2;
     }
   }, path);
-  
-  console.log(newTable);
   
   return newTable;
 }
