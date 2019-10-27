@@ -1,9 +1,12 @@
 import * as R from "ramda";
 import {START, END, FREE, OBSTACLE} from "../redux/objectTypes";
-import * as stepState from "../redux/stepState"
-import * as Immutable from "immutable"
+import * as stepState from "../redux/stepState";
+import * as Immutable from "immutable";
+import * as direction from "./direction";
 
 const mapIndexed = R.addIndex(R.map);
+const X = "x";
+const Y = "y";
 
 export const searchTable = (table, objectType) => {
   return R.pipe(mapIndexed((xItems, y) => R.pipe(
@@ -31,20 +34,12 @@ const returnStartEndPositions = (state) => {
   };
 }
 
-const moveSouth = (position, path) => {
-  const newPosition = R.clone(position);
-
-  newPosition[1] = newPosition[1] + 1;
-  const newPath = path.push(newPosition);
-  return { newPosition: newPosition, path: newPath };
-}
-
 const translateArrayToXY = (arrayElement) => {
   return { x: arrayElement[1], y: arrayElement[0]}
 }
 
-const updateMovesToTable = (state, path) => {
-  const newTable = R.clone(state.table);
+const updateMovesToTable = (table, path) => {
+  const newTable = R.clone(table);
   R.forEach((item) => {
     const xy = translateArrayToXY(item)
     const element = newTable[xy.x][xy.y];
@@ -56,25 +51,116 @@ const updateMovesToTable = (state, path) => {
   return newTable;
 }
 
-const calculateHCost = (state) => {
-  const currentPosition = R.clone(state.startPosition);
-  const endPosition = R.clone(state.endPosition);
+const calculateDistanceBetween = (startPosition, endPosition) => {
+  return {x: endPosition[0]- startPosition[0], y: endPosition[1] - startPosition[1]};
+}
+
+const transformXMoves = (value) => {
+  if (value > 0) {
+    return {
+      direction: direction.E,
+      distance: value
+    }
+  }
+  else if (value < 0) {
+    return {
+      direction: direction.E,
+      distance: Math.abs(value)
+    }
+  }
+  else {
+    return {
+      direction: direction.NONE,
+      distance: value
+    }
+  }
+}
+
+const transformYMoves = (value) => {
+  if (value > 0) {
+    return {
+      direction: direction.S,
+      distance: value
+    }
+  }
+  else if (value < 0) {
+    return {
+      direction: direction.N,
+      distance: Math.abs(value)
+    }
+  }
+  else {
+    return {
+      direction: direction.NONE,
+      distance: value
+    }
+  }
+}
+
+const transformIntoMoves = (value, axis) => {
+  switch(axis) {
+    case X:
+      return transformXMoves(value);
+    case Y:
+      return transformYMoves(value);
+  }
+}
+
+const move = (moveDirection, position) => {
+  const newPosition = R.clone(position);
+
+  switch (moveDirection) {
+    case direction.S:
+      newPosition[1] = newPosition[1] + 1;
+      return newPosition;
+    case direction.N:
+      newPosition[1] = newPosition[1] - 1;
+      return newPosition;
+    case direction.W:
+      newPosition[0] = newPosition[0] - 1;
+      return newPosition;
+    case direction.E:
+      newPosition[0] = newPosition[0] + 1;
+      return newPosition;
+    default:
+      return newPosition;
+  }
+}
+
+const executeMoves = (moves, position) => {
+  const startPosition = R.clone(position);
   const path = Immutable.List();
   
-  const recurseToEnd = (cost, position, endPosition, path) => {
-    if (R.equals(position, endPosition)) {
-      return { cost: cost, path: path };
+  const untilMovesExecuted = (cost, position, direction, movesLeft, path) => {
+    if (movesLeft <= 0) {
+      return { cost: cost, path: path, position: position }
     }
-    const move = moveSouth(position, path);
-    return recurseToEnd(cost + 10, move.newPosition, endPosition, move.path); 
+    const newPosition = move(direction, position);
+    const newPath = path.push(newPosition);
+    return untilMovesExecuted(cost + 10, newPosition, direction, movesLeft-1, newPath)
   }
+  const pathCost = untilMovesExecuted(0, startPosition, moves.direction, moves.distance, path);
   
-  const move = recurseToEnd(0, currentPosition, endPosition, path);
-  const newTable = updateMovesToTable(state, move.path);
+  return pathCost;
+}
+
+const calculateHCost2 = (state) => {
+  const startPosition = R.clone(state.startPosition);
+  const endPosition = R.clone(state.endPosition);
+  const distance = calculateDistanceBetween(startPosition, endPosition);
   
+  const xMoves = transformIntoMoves(distance.x, X);
+  const yMoves = transformIntoMoves(distance.y, Y);
+  
+  const xPathCost = executeMoves(xMoves, state.startPosition);
+  const yPathCost = executeMoves(yMoves, xPathCost.position);
+
+  const xTable = updateMovesToTable(state.table, xPathCost.path);
+  const xyTable = updateMovesToTable(xTable, yPathCost.path);
+
   return {
-    table: newTable,
-    stepInfo: `Calculated H cost of ${move.cost} for position: ${state.currentPosition}`
+    table: xyTable,
+    stepInfo: `Calculated H cost of ${xPathCost.cost} for position: ${state.currentPosition}`
   }
 }
 
@@ -83,6 +169,7 @@ export const nextStep = (state) => {
     case stepState.INIT:
       return returnStartEndPositions(state);
     case stepState.H_COST:
-      return calculateHCost(state)
+      //return calculateHCost(state)
+      return calculateHCost2(state);
   }  
 };
