@@ -155,13 +155,14 @@ const calculateHCost = (state) => {
   
   const xPathCost = executeMoves(xMoves, state.startPosition);
   const yPathCost = executeMoves(yMoves, xPathCost.position);
+  const totalPathCost = xPathCost.cost + yPathCost.cost;
 
   const xTable = updateMovesToTable(state.table, xPathCost.path);
   const xyTable = updateMovesToTable(xTable, yPathCost.path);
 
   return {
     table: xyTable,
-    stepInfo: `Calculated H cost of ${xPathCost.cost} for position: ${state.currentPosition}`
+    stepInfo: `Calculated H cost of ${totalPathCost} for position: ${state.currentPosition}`
   }
 }
 
