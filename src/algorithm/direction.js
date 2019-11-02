@@ -7,3 +7,5 @@ export const SE = "se";
 export const NW = "nw";
 export const NE = "ne";
 export const NONE = "none";
+
+export const DIAGONAL_DIRECTIONS = [SW, SE, NW, NE];

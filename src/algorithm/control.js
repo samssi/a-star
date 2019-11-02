@@ -108,6 +108,11 @@ export const pathObject = (cost, path, position) => {
     return { cost: cost, path: path, position: position }
 }
 
+export const addCost = (previousCost, currentDirection) => {
+  if (direction.DIAGONAL_DIRECTIONS.includes(currentDirection)) return previousCost + 15;
+  return previousCost + 10;
+}
+
 export const executeMoves = (moves, position) => {
   const startPosition = R.clone(position);
   const path = Immutable.List();
@@ -119,7 +124,7 @@ export const executeMoves = (moves, position) => {
     const newPosition = move(direction, position);
     const newPath = path.push(newPosition);
     // TODO: cost increment should be 15 if direction is SW, NE, NW or SE
-    return untilMovesExecuted(cost + 10, newPosition, direction, movesLeft-1, newPath)
+    return untilMovesExecuted(addCost(cost, direction), newPosition, direction, movesLeft-1, newPath)
   }
   const pathCost = untilMovesExecuted(0, startPosition, moves.direction, moves.distance, path);
   
