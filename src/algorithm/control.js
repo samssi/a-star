@@ -79,13 +79,17 @@ export const move = (moveDirection, position) => {
   }
 }
 
+export const pathObject = (cost, path, position) => {
+    return { cost: cost, path: path, position: position }
+}
+
 export const executeMoves = (moves, position) => {
   const startPosition = R.clone(position);
   const path = Immutable.List();
   
   const untilMovesExecuted = (cost, position, direction, movesLeft, path) => {
     if (movesLeft <= 0) {
-      return { cost: cost, path: path, position: position }
+      return pathObject(cost, path, position)
     }
     const newPosition = move(direction, position);
     const newPath = path.push(newPosition);
