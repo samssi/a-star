@@ -37,6 +37,26 @@ export const updateMovesToTable = (table, path) => {
   return newTable;
 }
 
+const NE = (position) => {
+    const nAddedPosition = N(position);
+    return E(nAddedPosition);
+}
+
+const NW = (position) => {
+    const nAddedPosition = N(position);
+    return W(nAddedPosition);
+}
+
+const SE = (position) => {
+    const sAddedPosition = S(position);
+    return E(sAddedPosition);
+}
+
+const SW = (position) => {
+    const sAddedPosition = S(position);
+    return W(sAddedPosition);
+}
+
 const N = (position) => {
     const newPosition = R.clone(position);
     newPosition[1] = newPosition[1] - 1;
@@ -66,10 +86,15 @@ export const move = (moveDirection, position) => {
     case direction.N:
         return N(position);
     case direction.NE:
-        newPosition[1] = newPosition[1] - 1;
-        return newPosition;
+        return NE(position);
+    case direction.NW:
+        return NW(position);
     case direction.S:
       return S(position);
+    case direction.SW:
+        return SW(position);
+    case direction.SE:
+        return SE(position);
     case direction.E:
         return E(position);
     case direction.W:
@@ -93,6 +118,7 @@ export const executeMoves = (moves, position) => {
     }
     const newPosition = move(direction, position);
     const newPath = path.push(newPosition);
+    // TODO: cost increment should be 15 if direction is SW, NE, NW or SE
     return untilMovesExecuted(cost + 10, newPosition, direction, movesLeft-1, newPath)
   }
   const pathCost = untilMovesExecuted(0, startPosition, moves.direction, moves.distance, path);
