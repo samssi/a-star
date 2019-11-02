@@ -37,24 +37,45 @@ export const updateMovesToTable = (table, path) => {
   return newTable;
 }
 
-export const move = (moveDirection, position) => {
-  const newPosition = R.clone(position);
+const N = (position) => {
+    const newPosition = R.clone(position);
+    newPosition[1] = newPosition[1] - 1;
+    return newPosition;
+}
 
+const S = (position) => {
+    const newPosition = R.clone(position);
+    newPosition[1] = newPosition[1] + 1;
+    return newPosition;
+}
+
+const E = (position) => {
+    const newPosition = R.clone(position);
+    newPosition[0] = newPosition[0] + 1;
+    return newPosition;
+} 
+
+const W = (position) => {
+    const newPosition = R.clone(position);
+    newPosition[0] = newPosition[0] - 1;
+    return newPosition;
+} 
+
+export const move = (moveDirection, position) => {
   switch (moveDirection) {
-    case direction.S:
-      newPosition[1] = newPosition[1] + 1;
-      return newPosition;
     case direction.N:
-      newPosition[1] = newPosition[1] - 1;
-      return newPosition;
-    case direction.W:
-      newPosition[0] = newPosition[0] - 1;
-      return newPosition;
+        return N(position);
+    case direction.NE:
+        newPosition[1] = newPosition[1] - 1;
+        return newPosition;
+    case direction.S:
+      return S(position);
     case direction.E:
-      newPosition[0] = newPosition[0] + 1;
-      return newPosition;
+        return E(position);
+    case direction.W:
+        return W(position)
     default:
-      return newPosition;
+      return position;
   }
 }
 
