@@ -1,4 +1,4 @@
-import {START, END, FREE, OBSTACLE} from "../redux/objectTypes";
+import {START, END, FREE, OBSTACLE, PATH} from "../redux/objectTypes";
 import * as R from "ramda";
 import * as Immutable from "immutable";
 import * as direction from "./direction";
@@ -30,7 +30,7 @@ export const updateMovesToTable = (table, path) => {
     const xy = translateArrayToXY(item)
     const element = newTable[xy.x][xy.y];
     if(element === FREE.value) {
-      return newTable[xy.x][xy.y] = 2;
+      return newTable[xy.x][xy.y] = PATH.value;
     }
   }, path);
   
