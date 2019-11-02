@@ -1,6 +1,7 @@
 import * as R from "ramda";
 import * as control from "./control"
 import * as direction from "./direction";
+import * as Immutable from "immutable";
 
 const X = "x";
 const Y = "y";
@@ -28,34 +29,45 @@ const transformYMoves = (value) => {
       return control.moveObject(direction.NONE, value);
     }
 }
+
+const movesObject = (x, y, diagonal) => {
+    return { x: x, y: y, diagonal: diagonal }
+}
   
-const transformIntoMoves = (value, axis) => {
-    switch(axis) {
-        case X:
-          return transformXMoves(value);
-        case Y:
-            return transformYMoves(value);
-    }
+const transformIntoMoves = (distance) => {
+    return movesObject(
+        transformXMoves(distance.x),
+        transformYMoves(distance.y),
+        transformYMoves(distance.y)
+    );
 }
 
 const calculateDistanceBetween = (startPosition, endPosition) => {
-    return {x: endPosition[0]- startPosition[0], y: endPosition[1] - startPosition[1]};
-  }
+    return distanceObject(endPosition[0]- startPosition[0], endPosition[1] - startPosition[1]);
+}
+
+const distanceObject = (x, y) => {
+    return {x: x, y: y}
+}
+
+const transformIntoDiagonalMoves = (xPath, yPath) => {
+    
+}
 
 export const calculateHCost = (state) => {
     const startPosition = R.clone(state.startPosition);
     const endPosition = R.clone(state.endPosition);
     const distance = calculateDistanceBetween(startPosition, endPosition);
     
-    const xMoves = transformIntoMoves(distance.x, X);
-    const yMoves = transformIntoMoves(distance.y, Y);
+    const moves = transformIntoMoves(distance);
     
-    const xPathCost = control.executeMoves(xMoves, state.startPosition);
-    const yPathCost = control.executeMoves(yMoves, xPathCost.position);
-    const totalPathCost = xPathCost.cost + yPathCost.cost;
+    const xPath = control.executeMoves(moves.x, state.startPosition);
+    const yPath = control.executeMoves(moves.y, xPath.position);
+
+    const totalPathCost = xPath.cost + yPath.cost;
   
-    const xTable = control.updateMovesToTable(state.table, xPathCost.path);
-    const xyTable = control.updateMovesToTable(xTable, yPathCost.path);
+    const xTable = control.updateMovesToTable(state.table, xPath.path);
+    const xyTable = control.updateMovesToTable(xTable, yPath.path);
   
     return {
       table: xyTable,
