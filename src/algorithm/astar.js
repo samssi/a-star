@@ -1,12 +1,18 @@
-import * as R from "ramda";
 import {START, END, FREE, OBSTACLE} from "../redux/objectTypes";
 import * as stepState from "../redux/stepState";
 import * as Immutable from "immutable";
 import * as direction from "./direction";
+import * as hCalculator from "./hCalculator";
+import * as R from "ramda";
 
 const mapIndexed = R.addIndex(R.map);
-const X = "x";
-const Y = "y";
+
+export const moveObject = (direction, distance) => {
+    return {
+      direction: direction,
+      distance: distance
+    };
+}
 
 export const searchTable = (table, objectType) => {
   return R.pipe(mapIndexed((xItems, y) => R.pipe(
@@ -38,7 +44,7 @@ const translateArrayToXY = (arrayElement) => {
   return { x: arrayElement[1], y: arrayElement[0]}
 }
 
-const updateMovesToTable = (table, path) => {
+export const updateMovesToTable = (table, path) => {
   const newTable = R.clone(table);
   R.forEach((item) => {
     const xy = translateArrayToXY(item)
@@ -49,61 +55,6 @@ const updateMovesToTable = (table, path) => {
   }, path);
   
   return newTable;
-}
-
-const calculateDistanceBetween = (startPosition, endPosition) => {
-  return {x: endPosition[0]- startPosition[0], y: endPosition[1] - startPosition[1]};
-}
-
-const transformXMoves = (value) => {
-  if (value > 0) {
-    return {
-      direction: direction.E,
-      distance: value
-    }
-  }
-  else if (value < 0) {
-    return {
-      direction: direction.W,
-      distance: Math.abs(value)
-    }
-  }
-  else {
-    return {
-      direction: direction.NONE,
-      distance: value
-    }
-  }
-}
-
-const transformYMoves = (value) => {
-  if (value > 0) {
-    return {
-      direction: direction.S,
-      distance: value
-    }
-  }
-  else if (value < 0) {
-    return {
-      direction: direction.N,
-      distance: Math.abs(value)
-    }
-  }
-  else {
-    return {
-      direction: direction.NONE,
-      distance: value
-    }
-  }
-}
-
-const transformIntoMoves = (value, axis) => {
-  switch(axis) {
-    case X:
-      return transformXMoves(value);
-    case Y:
-      return transformYMoves(value);
-  }
 }
 
 const move = (moveDirection, position) => {
@@ -127,7 +78,7 @@ const move = (moveDirection, position) => {
   }
 }
 
-const executeMoves = (moves, position) => {
+export const executeMoves = (moves, position) => {
   const startPosition = R.clone(position);
   const path = Immutable.List();
   
@@ -144,33 +95,11 @@ const executeMoves = (moves, position) => {
   return pathCost;
 }
 
-const calculateHCost = (state) => {
-  const startPosition = R.clone(state.startPosition);
-  const endPosition = R.clone(state.endPosition);
-  const distance = calculateDistanceBetween(startPosition, endPosition);
-  console.log(distance)
-  
-  const xMoves = transformIntoMoves(distance.x, X);
-  const yMoves = transformIntoMoves(distance.y, Y);
-  
-  const xPathCost = executeMoves(xMoves, state.startPosition);
-  const yPathCost = executeMoves(yMoves, xPathCost.position);
-  const totalPathCost = xPathCost.cost + yPathCost.cost;
-
-  const xTable = updateMovesToTable(state.table, xPathCost.path);
-  const xyTable = updateMovesToTable(xTable, yPathCost.path);
-
-  return {
-    table: xyTable,
-    stepInfo: `Calculated H cost of ${totalPathCost} for position: ${state.currentPosition}`
-  }
-}
-
 export const nextStep = (state) => {
   switch (state.stepState) {
     case stepState.INIT:
       return returnStartEndPositions(state);
     case stepState.H_COST:
-      return calculateHCost(state)
+      return hCalculator.calculateHCost(state)
   }  
 };
