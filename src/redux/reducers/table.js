@@ -5,6 +5,15 @@ import * as astar from "../../algorithm/astar"
 import * as stepState from "../stepState"
 import * as R from "ramda";
 
+const emptyTable =
+    [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
+
 const initialState = {
     table: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0],
@@ -22,6 +31,14 @@ const initialState = {
     currentPosition: [-1,-1]
 };
 
+const resetTable = (state, action) => {
+  const newTable = R.clone(emptyTable);
+  return {
+    ...state,
+    table: newTable
+  };
+};
+
 const table = (state = initialState, action) => {
     switch (action.type) {
         case SELECT_CELL:
@@ -31,11 +48,13 @@ const table = (state = initialState, action) => {
                 ...state,
                 table: newTable
             };
-        case EDIT_TYPE:
-            return {
+      case EDIT_TYPE:
+            return action.payload.objectValue === objectTypes.RESET.value ?
+              resetTable(state, action) :
+              {
                 ...state,
                 editObjectType: action.payload.objectValue
-            };
+              };
         case TOGGLE_MODE:
             return {
                 ...state,
