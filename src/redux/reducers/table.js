@@ -31,7 +31,7 @@ const initialState = {
     currentPosition: [-1,-1]
 };
 
-const resetTable = (state, action) => {
+const resetTable = (state) => {
   const newTable = R.clone(emptyTable);
   return {
     ...state,
