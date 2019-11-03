@@ -10,7 +10,7 @@ export const moveObject = (direction, distance) => {
       direction: direction,
       distance: distance
     };
-}
+};
 
 export const searchTable = (table, objectType) => {
   return R.pipe(mapIndexed((xItems, y) => R.pipe(
@@ -22,7 +22,7 @@ export const searchTable = (table, objectType) => {
 
 export const translateArrayToXY = (arrayElement) => {
   return { x: arrayElement[1], y: arrayElement[0] }
-}
+};
 
 export const updateMovesToTable = (table, path) => {
   const newTable = R.clone(table);
@@ -35,51 +35,51 @@ export const updateMovesToTable = (table, path) => {
   }, path);
   
   return newTable;
-}
+};
 
 const NE = (position) => {
     const nAddedPosition = N(position);
     return E(nAddedPosition);
-}
+};
 
 const NW = (position) => {
     const nAddedPosition = N(position);
     return W(nAddedPosition);
-}
+};
 
 const SE = (position) => {
     const sAddedPosition = S(position);
     return E(sAddedPosition);
-}
+};
 
 const SW = (position) => {
     const sAddedPosition = S(position);
     return W(sAddedPosition);
-}
+};
 
 const N = (position) => {
     const newPosition = R.clone(position);
     newPosition[1] = newPosition[1] - 1;
     return newPosition;
-}
+};
 
 const S = (position) => {
     const newPosition = R.clone(position);
     newPosition[1] = newPosition[1] + 1;
     return newPosition;
-}
+};
 
 const E = (position) => {
     const newPosition = R.clone(position);
     newPosition[0] = newPosition[0] + 1;
     return newPosition;
-} 
+};
 
 const W = (position) => {
     const newPosition = R.clone(position);
     newPosition[0] = newPosition[0] - 1;
     return newPosition;
-} 
+};
 
 export const move = (moveDirection, position) => {
   switch (moveDirection) {
@@ -102,16 +102,28 @@ export const move = (moveDirection, position) => {
     default:
       return position;
   }
-}
+};
 
 export const pathObject = (cost, path, position) => {
     return { cost: cost, path: path, position: position }
-}
+};
 
 export const addCost = (previousCost, currentDirection) => {
   if (direction.DIAGONAL_DIRECTIONS.includes(currentDirection)) return previousCost + 15;
   return previousCost + 10;
-}
+};
+
+export const setCell = (table, x, y, objectType) => {
+  table[y][x] = objectType.value;
+  return table;
+};
+
+export const freeTypeFromTable = (state, objectTypeToRemove) => {
+  const newTable = R.clone(state.table);
+  const objectLocations = searchTable(newTable, objectTypeToRemove);
+  objectLocations.forEach(element => setCell(newTable, element[0], element[1], FREE));
+  return newTable;
+};
 
 export const executeMoves = (moves, position) => {
   const startPosition = R.clone(position);
@@ -123,9 +135,8 @@ export const executeMoves = (moves, position) => {
     }
     const newPosition = move(direction, position);
     const newPath = path.push(newPosition);
-    // TODO: cost increment should be 15 if direction is SW, NE, NW or SE
     return untilMovesExecuted(addCost(cost, direction), newPosition, direction, movesLeft-1, newPath)
-  }
+  };
   const pathCost = untilMovesExecuted(0, startPosition, moves.direction, moves.distance, path);
   
   return pathCost;
