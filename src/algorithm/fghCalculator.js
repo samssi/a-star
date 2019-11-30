@@ -1,13 +1,17 @@
 import * as R from "ramda";
-import * as control from "./control"
-import * as direction from "./direction";
-import * as Immutable from "immutable";
-import * as stepState from "../redux/stepState";
-import {PATH} from "../redux/objectTypes";
-import {H_COST} from "../redux/stepState";
+import {mutateCell, surroundingCells} from "./control";
+import {SURROUNDING} from "../redux/objectTypes";
 
-
+const calculateFgh = (table, cells) => {
+    R.forEach(cell => mutateCell(table, cell[0], cell[1], SURROUNDING), cells);
+    return table;
+};
 
 export const calculateFghCosts = (state) => {
-    console.log(state.currentPosition)
-}
+    const table = R.clone(state.table);
+    const cells = surroundingCells(state.currentPosition);
+
+    return {
+        table: calculateFgh(table, cells)
+    }
+};

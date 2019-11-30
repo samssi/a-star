@@ -5,13 +5,13 @@ import * as astar from "../../algorithm/astar"
 import * as stepState from "../stepState"
 import * as R from "ramda";
 import {START} from "../objectTypes";
-import {emptyTable, setCell} from "../../algorithm/control";
+import {emptyTable, mutateCell} from "../../algorithm/control";
 import {END} from "../objectTypes";
 
 const initTable = () => {
   const table = emptyTable(12, 9);
-  setCell(table, 0,0, START);
-  setCell(table, 3,8, END);
+  mutateCell(table, 1,3, START);
+  mutateCell(table, 3,8, END);
   return table;
 };
 
