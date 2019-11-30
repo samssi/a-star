@@ -18,7 +18,7 @@ const initTable = () => {
 const initialState = {
     table: initTable(),
     mode: modes.RUN,
-    editObjectType: objectTypes.FREE.value,
+    editObjectType: objectTypes.FREE,
     stepState: stepState.INIT,
     stepInfo: "Astar ready!",
     startPosition: [-1,-1],
@@ -44,11 +44,11 @@ const table = (state = initialState, action) => {
                 table: newTable
             };
         case EDIT_TYPE:
-            return action.payload.objectValue === objectTypes.RESET.value ?
+            return action.payload.object.value === objectTypes.RESET.value ?
                 resetTable(state, action) :
                 {
                     ...state,
-                    editObjectType: action.payload.objectValue
+                    editObjectType: action.payload.object
                 };
         case TOGGLE_MODE:
             return {

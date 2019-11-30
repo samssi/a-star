@@ -5,7 +5,7 @@ import * as direction from "./direction";
 
 const mapIndexed = R.addIndex(R.map);
 
-export const emptyTable = (width, height) => R.times(() => R.repeat(0, width), height);
+export const emptyTable = (width, height) => R.times(() => R.repeat(FREE, width), height);
 
 export const moveObject = (direction, distance) => {
     return {
@@ -16,7 +16,7 @@ export const moveObject = (direction, distance) => {
 
 export const searchTable = (table, objectType) => {
     return R.pipe(mapIndexed((xItems, y) => R.pipe(
-        R.map(R.equals(objectType.value)),
+        R.map(R.equals(objectType)),
         mapIndexed((yItems, x) => yItems && [x, y]),
         R.reject(R.equals(false))
     )(xItems)), R.unnest)(table);
@@ -31,8 +31,8 @@ export const updateMovesToTable = (table, path) => {
     R.forEach((item) => {
         const xy = translateArrayToXY(item);
         const element = newTable[xy.x][xy.y];
-        if(element === FREE.value) {
-            return newTable[xy.x][xy.y] = PATH.value;
+        if(element.value === FREE.value) {
+            return newTable[xy.x][xy.y] = PATH;
         }
     }, path);
 
@@ -129,7 +129,7 @@ export const addCost = (previousCost, currentDirection) => {
 };
 
 export const mutateCell = (table, x, y, objectType) => {
-    table[y][x] = objectType.value;
+    table[y][x] = objectType;
     return table;
 };
 

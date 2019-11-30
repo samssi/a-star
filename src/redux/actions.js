@@ -9,10 +9,10 @@ export const plotCell = (x, y) => ({
   }
 });
 
-export const editType = (objectValue) => ({
+export const editType = (object) => ({
   type: EDIT_TYPE,
   payload: {
-    objectValue: objectValue
+    object: object
   }
 });
 
