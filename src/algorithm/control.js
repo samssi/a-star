@@ -29,7 +29,7 @@ export const translateArrayToXY = (arrayElement) => {
 export const updateMovesToTable = (table, path) => {
   const newTable = R.clone(table);
   R.forEach((item) => {
-    const xy = translateArrayToXY(item)
+    const xy = translateArrayToXY(item);
     const element = newTable[xy.x][xy.y];
     if(element === FREE.value) {
       return newTable[xy.x][xy.y] = PATH.value;
@@ -100,7 +100,7 @@ export const move = (moveDirection, position) => {
     case direction.E:
         return E(position);
     case direction.W:
-        return W(position)
+        return W(position);
     default:
       return position;
   }

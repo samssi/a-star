@@ -75,27 +75,37 @@ const transformIntoDiagonalIncludedMoves = (xMove, yMove) => {
     return movesObject(newXMove, newYMove, diagonalMove)
 };
 
-export const calculateHCost = (state) => {
-    const startPosition = R.clone(state.startPosition);
-    const endPosition = R.clone(state.endPosition);
+export const hCostObject = (table, totalPathCost) => {
+    return {
+        table,
+        totalPathCost
+    };
+};
+
+export const hCost = (table, startPosition, endPosition) => {
     const distance = calculateDistanceBetween(startPosition, endPosition);
 
     const moves = transformIntoMoves(distance);
 
-    const diagonalPath = control.executeMoves(moves.diagonal, state.startPosition);
+    const diagonalPath = control.executeMoves(moves.diagonal, startPosition);
     const xPath = control.executeMoves(moves.x, diagonalPath.position);
     const yPath = control.executeMoves(moves.y, xPath.position);
 
     const totalPathCost = diagonalPath.cost + xPath.cost + yPath.cost;
 
-    const diagonalTable = control.updateMovesToTable(state.table, diagonalPath.path);
+    const diagonalTable = control.updateMovesToTable(table, diagonalPath.path);
     const xTable = control.updateMovesToTable(diagonalTable, xPath.path);
-    const xyTable = control.updateMovesToTable(xTable, yPath.path);
+    const pathIncludedTable = control.updateMovesToTable(xTable, yPath.path);
 
+    return hCostObject(pathIncludedTable, totalPathCost);
+};
+
+export const calculateHCost = (state) => {
+    const hCostResult = hCost(state.table, state.startPosition, state.endPosition);
 
     return {
-        table: xyTable,
+        table: hCostResult.table,
         stepState: stepState.CLEAN_H_COST,
-        stepInfo: `Calculated H cost of ${totalPathCost} for position: ${state.currentPosition}`
+        stepInfo: `Calculated H cost of ${hCostResult.totalPathCost} for position: ${state.currentPosition}`
     }
-}
+};
