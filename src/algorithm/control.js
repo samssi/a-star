@@ -128,8 +128,8 @@ export const addCost = (previousCost, currentDirection) => {
     return previousCost + 10;
 };
 
-export const mutateCell = (table, x, y, objectType) => {
-    table[y][x] = objectType;
+export const mutateCell = (table, x, y, object) => {
+    table[y][x] = object;
     return table;
 };
 

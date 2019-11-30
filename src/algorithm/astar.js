@@ -23,5 +23,9 @@ export const nextStep = (state) => {
       };
     case stepState.FGH_COST_NEXT:
       return fghCalculator.calculateFghCosts(state);
+    case stepState.FGH_COST_LOWEST:
+      return {
+        stepInfo: "Finding the lowest valued cell."
+      }
   }  
 };
