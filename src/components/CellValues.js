@@ -39,10 +39,9 @@ class CellValues extends React.Component {
 
 
   render() {
-    const objectType = objectTypes.findByValue(this.props.item)
-    if (objectType === objectTypes.START) {
-      //return this.directionCosts();
-      return this.empty();
+    const objectType = objectTypes.findByValue(this.props.item);
+    if (objectType === objectTypes.SURROUNDING) {
+      return this.directionCosts();
     }
     else {
       return this.empty();

@@ -13,7 +13,7 @@ const tableStyle = {
     right: 0
 };
 
-const mapIndexed = R.addIndex(R.map)
+const mapIndexed = R.addIndex(R.map);
 
 class Table extends React.Component {
     constructor(props, context) {
@@ -21,9 +21,8 @@ class Table extends React.Component {
     }
 
     renderTd(item, x, y) {
-        const key = `${x},${y}`
-        const cell = <Cell key={key} {...this.props} item={item} x={x} y={y} />;
-        return cell;
+        const key = `${x},${y}`;
+        return <Cell key={key} {...this.props} item={item} x={x} y={y} />;
     }
 
     renderTr(items, y) {

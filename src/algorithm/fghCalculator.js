@@ -2,8 +2,14 @@ import * as R from "ramda";
 import {mutateCell, surroundingCells} from "./control";
 import {SURROUNDING} from "../redux/objectTypes";
 
+const drawToTable = (table, cell) => {
+    mutateCell(table, cell[0], cell[1], SURROUNDING);
+};
+
 const calculateFgh = (table, cells) => {
-    R.forEach(cell => mutateCell(table, cell[0], cell[1], SURROUNDING), cells);
+    R.forEach(cell => {
+      drawToTable(table, cell);
+    }, cells);
     return table;
 };
 
