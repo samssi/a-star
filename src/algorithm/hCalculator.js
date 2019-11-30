@@ -82,7 +82,7 @@ export const hCostObject = (table, totalPathCost) => {
     };
 };
 
-export const hCost = (table, startPosition, endPosition) => {
+export const hPath = (table, startPosition, endPosition) => {
     const distance = calculateDistanceBetween(startPosition, endPosition);
 
     const moves = transformIntoMoves(distance);
@@ -101,7 +101,7 @@ export const hCost = (table, startPosition, endPosition) => {
 };
 
 export const calculateHCost = (state) => {
-    const hCostResult = hCost(state.table, state.startPosition, state.endPosition);
+    const hCostResult = hPath(state.table, state.startPosition, state.endPosition);
 
     return {
         table: hCostResult.table,

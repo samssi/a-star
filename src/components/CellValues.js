@@ -2,8 +2,22 @@ import React from 'react';
 import * as objectTypes from "../redux/objectTypes";
 
 const contentStyle = {
-  fontSize: "10px",
-  textAlign: "center"
+  fontSize: "10px"
+};
+
+const leftCellStyle = {
+  textAlign: "left",
+  width: "33%"
+};
+
+const centerCellStyle = {
+  textAlign: "center",
+  width: "33%"
+};
+
+const rightCellStyle = {
+  textAlign: "right",
+  width: "33%"
 };
 
 class CellValues extends React.Component {
@@ -11,23 +25,21 @@ class CellValues extends React.Component {
     super(props, context);
   }
 
-  directionCosts() {
+  directionCosts(item) {
     return <table style={contentStyle}>
       <tbody>
       <tr>
-        <td>15</td>
-        <td>10</td>
-        <td>15</td>
+        <td style={leftCellStyle}>{item.gCost}</td>
+        <td style={centerCellStyle}>&nbsp;</td>
+        <td style={rightCellStyle}>{item.hCost}</td>
       </tr>
       <tr>
-        <td>10</td>
-        <td>100</td>
-        <td>10</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
       </tr>
       <tr>
-        <td>15</td>
-        <td>10</td>
-        <td>15</td>
+        <td>&nbsp;</td>
       </tr>
       </tbody>
     </table>
@@ -39,9 +51,8 @@ class CellValues extends React.Component {
 
 
   render() {
-    const objectType = objectTypes.findByValue(this.props.item);
-    if (objectType === objectTypes.SURROUNDING) {
-      return this.directionCosts();
+    if (this.props.item.value === objectTypes.SURROUNDING().value) {
+      return this.directionCosts(this.props.item);
     }
     else {
       return this.empty();
