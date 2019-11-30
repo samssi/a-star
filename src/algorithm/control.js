@@ -5,6 +5,8 @@ import * as direction from "./direction";
 
 const mapIndexed = R.addIndex(R.map);
 
+export const emptyTable = (width, height) => R.times(() => R.repeat(0, width), height);
+
 export const moveObject = (direction, distance) => {
     return {
       direction: direction,

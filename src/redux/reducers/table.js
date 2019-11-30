@@ -4,18 +4,19 @@ import * as modes from "../modes";
 import * as astar from "../../algorithm/astar"
 import * as stepState from "../stepState"
 import * as R from "ramda";
+import {START} from "../objectTypes";
+import {emptyTable, setCell} from "../../algorithm/control";
+import {END} from "../objectTypes";
 
-const emptyTable = (width, height) => R.repeat(R.repeat(0, width), height);
+const initTable = () => {
+  const table = emptyTable(12, 9);
+  setCell(table, 0,0, START);
+  setCell(table, 3,8, END);
+  return table;
+};
 
 const initialState = {
-    // 12 x 7
-    table: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+    table: initTable(),
     mode: modes.RUN,
     editObjectType: objectTypes.FREE.value,
     stepState: stepState.INIT,
