@@ -16,7 +16,7 @@ class ModeSelector extends React.Component {
     }
 
     renderObjectTypes() {
-        return R.map(element => <Editor key={element.value} {...this.props} objectValue={element.value} objectDescription={element.description} objectColor={element.color}/>, objectTypes.allTypes);
+        return R.map(element => <Editor key={element.value} {...this.props} object={element} />, objectTypes.allTypes);
     }
 
     renderEditor() {

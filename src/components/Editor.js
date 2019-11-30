@@ -4,7 +4,7 @@ const selectedStyle = (color) => {
     return {
         backgroundColor: color
     }
-}
+};
 
 class Editor extends React.Component {
     constructor(props, context) {
@@ -12,11 +12,11 @@ class Editor extends React.Component {
     }
 
     selected() {
-        return this.props.table.editObjectType === this.props.objectValue ? selectedStyle(this.props.objectColor) : selectedStyle("white");
+        return this.props.table.editObjectType.value === this.props.object.value ? selectedStyle(this.props.object.color) : selectedStyle("white");
     }
 
     render() {
-        return <span key={this.props.objectValue} style={this.selected()} className="modeSelect" onClick={() => this.props.editType(this.props.objectValue)} >{this.props.objectDescription}</span>;
+        return <span key={this.props.objectValue} style={this.selected()} className="modeSelect" onClick={() => this.props.editType(this.props.object)} >{this.props.object.description}</span>;
     }
 }
 

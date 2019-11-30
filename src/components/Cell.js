@@ -21,7 +21,7 @@ class Cell extends React.Component {
     }
 
     setCellColor(cellValue) {
-        return objectTypes.findByValue(cellValue).color;
+        return cellValue.color;
     }
 
     selectCell(x, y) {
