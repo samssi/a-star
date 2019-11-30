@@ -1,7 +1,6 @@
 import * as R from "ramda";
 import * as control from "./control"
 import * as direction from "./direction";
-import * as Immutable from "immutable";
 import * as stepState from "../redux/stepState";
 
 const X = "x";

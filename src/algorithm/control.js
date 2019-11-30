@@ -139,7 +139,5 @@ export const executeMoves = (moves, position) => {
     const newPath = path.push(newPosition);
     return untilMovesExecuted(addCost(cost, direction), newPosition, direction, movesLeft-1, newPath)
   };
-  const pathCost = untilMovesExecuted(0, startPosition, moves.direction, moves.distance, path);
-  
-  return pathCost;
-}
+  return untilMovesExecuted(0, startPosition, moves.direction, moves.distance, path);
+};
