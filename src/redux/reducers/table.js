@@ -10,7 +10,7 @@ import {END} from "../objectTypes";
 
 const initTable = () => {
   const table = emptyTable(12, 9);
-  mutateCell(table, 1,3, START);
+  mutateCell(table, 0,3, START);
   mutateCell(table, 3,8, END);
   return table;
 };
