@@ -84,7 +84,7 @@ const W = (position) => {
 };
 
 export const surroundingCells = (position) => {
-    return [
+    const cells = [
         move(direction.N, position),
         move(direction.NW, position),
         move(direction.NE, position),
@@ -94,28 +94,33 @@ export const surroundingCells = (position) => {
         move(direction.SW, position),
         move(direction.S, position)
     ];
+    return R.reject(R.isNil, cells);
+};
+
+export const withPickUpRules = (position) => {
+    return (position[0] < 0 || position [1] < 0) ? undefined : position;
 };
 
 export const move = (moveDirection, position) => {
     switch (moveDirection) {
         case direction.N:
-            return N(position);
+            return withPickUpRules(N(position));
         case direction.NE:
-            return NE(position);
+            return withPickUpRules(NE(position));
         case direction.NW:
-            return NW(position);
+            return withPickUpRules(NW(position));
         case direction.S:
-            return S(position);
+            return withPickUpRules(S(position));
         case direction.SW:
-            return SW(position);
+            return withPickUpRules(SW(position));
         case direction.SE:
-            return SE(position);
+            return withPickUpRules(SE(position));
         case direction.E:
-            return E(position);
+            return withPickUpRules(E(position));
         case direction.W:
-            return W(position);
+            return withPickUpRules(W(position));
         default:
-            return position;
+            return undefined;
     }
 };
 
