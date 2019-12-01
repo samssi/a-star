@@ -22,7 +22,6 @@ const calculateFgh = (table, cells, startPosition, endPosition) => {
 export const calculateFghCosts = (state) => {
     const table = R.clone(state.table);
     const cells = surroundingCells(table, state.currentPosition);
-    console.log(cells);
 
     return {
         table: calculateFgh(table, cells, state.startPosition, state.endPosition),
