@@ -34,9 +34,9 @@ class CellValues extends React.Component {
         <td style={rightCellStyle}>{item.hCost}</td>
       </tr>
       <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
+        <td style={leftCellStyle}>&nbsp;</td>
+        <td style={centerCellStyle}>{item.fCost}</td>
+        <td style={rightCellStyle}>&nbsp;</td>
       </tr>
       <tr>
         <td>&nbsp;</td>
