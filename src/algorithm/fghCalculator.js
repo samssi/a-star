@@ -8,7 +8,8 @@ const drawToTable = (table, cell, startPosition, endPosition) => {
     const hPathCost = hPath(table, cell, endPosition).totalPathCost;
     // TODO: using heuristic calculation is temp. Heuristics doesn't calculate around objects but direct path through them!
     const gPathCost = hPath(table, cell, startPosition).totalPathCost;
-    mutateCell(table, cell[0], cell[1], SURROUNDING(gPathCost, hPathCost, -1));
+    const fCost = hPathCost + gPathCost;
+    mutateCell(table, cell[0], cell[1], SURROUNDING(gPathCost, hPathCost, fCost));
 };
 
 const calculateFgh = (table, cells, startPosition, endPosition) => {
