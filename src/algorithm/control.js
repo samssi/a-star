@@ -83,42 +83,74 @@ const W = (position) => {
     return newPosition;
 };
 
-export const surroundingCells = (position) => {
+export const surroundingCells = (table, position) => {
     const cells = [
-        move(direction.N, position),
-        move(direction.NW, position),
-        move(direction.NE, position),
-        move(direction.W, position),
-        move(direction.E, position),
-        move(direction.SE, position),
-        move(direction.SW, position),
-        move(direction.S, position)
+        controlledMove(table, direction.N, position),
+        controlledMove(table, direction.NW, position),
+        controlledMove(table, direction.NE, position),
+        controlledMove(table, direction.W, position),
+        controlledMove(table, direction.E, position),
+        controlledMove(table, direction.SE, position),
+        controlledMove(table, direction.SW, position),
+        controlledMove(table, direction.S, position)
     ];
     return R.reject(R.isNil, cells);
 };
 
-export const withPickUpRules = (position) => {
-    return (position[0] < 0 || position [1] < 0) ? undefined : position;
+const outOfBoundsRule = (position) => (position[0] < 0 || position [1] < 0) ? undefined : position;
+
+// TODO: this should actually check closed nodes list if the position is on it. Obstacles should always be closed on init. Temp solution!
+const obstacleRule = (table, position) => R.equals(table[position[1]][position[0]], OBSTACLE) ? undefined : position;
+
+const withPickUpRules = (table, position) => {
+    const outOfBoundFilterPosition = outOfBoundsRule(position);
+    if (R.not(R.isNil(outOfBoundFilterPosition))) {
+        return obstacleRule(table, outOfBoundFilterPosition);
+    }
+    return outOfBoundFilterPosition;
+};
+
+export const controlledMove = (table, moveDirection, position) => {
+    switch (moveDirection) {
+        case direction.N:
+            return withPickUpRules(table, N(position));
+        case direction.NE:
+            return withPickUpRules(table, NE(position));
+        case direction.NW:
+            return withPickUpRules(table, NW(position));
+        case direction.S:
+            return withPickUpRules(table, S(position));
+        case direction.SW:
+            return withPickUpRules(table, SW(position));
+        case direction.SE:
+            return withPickUpRules(table, SE(position));
+        case direction.E:
+            return withPickUpRules(table, E(position));
+        case direction.W:
+            return withPickUpRules(table, W(position));
+        default:
+            return undefined;
+    }
 };
 
 export const move = (moveDirection, position) => {
     switch (moveDirection) {
         case direction.N:
-            return withPickUpRules(N(position));
+            return N(position);
         case direction.NE:
-            return withPickUpRules(NE(position));
+            return NE(position);
         case direction.NW:
-            return withPickUpRules(NW(position));
+            return NW(position);
         case direction.S:
-            return withPickUpRules(S(position));
+            return S(position);
         case direction.SW:
-            return withPickUpRules(SW(position));
+            return SW(position);
         case direction.SE:
-            return withPickUpRules(SE(position));
+            return SE(position);
         case direction.E:
-            return withPickUpRules(E(position));
+            return E(position);
         case direction.W:
-            return withPickUpRules(W(position));
+            return W(position);
         default:
             return undefined;
     }
