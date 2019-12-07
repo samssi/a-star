@@ -36,7 +36,7 @@ class Table extends React.Component {
     }
 
     render() {
-        return <div>{this.renderTable(this.props.table.table)}</div>;
+        return <div>{this.renderTable(this.props.main.table)}</div>;
     }
 }
 

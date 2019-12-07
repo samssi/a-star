@@ -6,6 +6,6 @@ export default class StepInfo extends React.Component {
     }
 
     render() {
-        return <div className="stepInfo">{this.props.table.stepInfo}</div>
+        return <div className="stepInfo">{this.props.main.stepInfo}</div>
     }
 }

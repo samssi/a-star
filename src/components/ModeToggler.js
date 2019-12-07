@@ -6,7 +6,7 @@ class ModeToggler extends React.Component {
     }
 
     render() {
-        return <span className="modeSelect" onClick={() => this.props.toggleMode(this.props.table.mode)}>{this.props.table.mode}</span>;
+        return <span className="modeSelect" onClick={() => this.props.toggleMode(this.props.main.mode)}>{this.props.main.mode}</span>;
     }
 }
 

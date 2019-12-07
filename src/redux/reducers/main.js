@@ -26,7 +26,7 @@ const resetTable = (state) => {
     };
 };
 
-const table = (state = initialState, action) => {
+const main = (state = initialState, action) => {
     switch (action.type) {
         case SELECT_CELL:
             const newTable = R.clone(state.table);
@@ -58,4 +58,4 @@ const table = (state = initialState, action) => {
     }
 };
 
-export default table;
+export default main;

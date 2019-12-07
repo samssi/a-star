@@ -26,7 +26,7 @@ class ModeSelector extends React.Component {
     }
 
     renderMode() {
-        return this.props.table.mode === modes.RUN ? this.renderRunner() : this.renderEditor()
+        return this.props.main.mode === modes.RUN ? this.renderRunner() : this.renderEditor()
     }
 
     render() {
