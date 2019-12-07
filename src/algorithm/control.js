@@ -99,7 +99,6 @@ export const surroundingCells = (table, position) => {
 
 const outOfBoundsRule = (position) => (position[0] < 0 || position [1] < 0) ? undefined : position;
 
-// TODO: this should actually check closed nodes list if the position is on it. Obstacles should always be closed on init. Temp solution!
 const obstacleRule = (table, position) => R.equals(table[position[1]][position[0]], OBSTACLE) ? undefined : position;
 
 const withPickUpRules = (table, position) => {
