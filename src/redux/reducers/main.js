@@ -24,10 +24,11 @@ const initialState = {
 };
 
 const resetTable = (state) => {
-    const newTable = emptyTable(tableWidth, tableHeight);
     return {
         ...state,
-        table: newTable
+        openNodes: emptyNodes(),
+        closedNodes: emptyNodes(),
+        table: emptyTable(tableWidth, tableHeight)
     };
 };
 
