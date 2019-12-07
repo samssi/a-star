@@ -5,15 +5,15 @@ import * as astar from "../../algorithm/astar"
 import * as stepState from "../stepState"
 import * as R from "ramda";
 import { emptyTable, startUpTable } from "../../algorithm/control";
-import {emptyNodes} from "../../algorithm/nodeMap";
+import {Map} from "immutable";
 
 const tableWidth = 12;
 const tableHeight = 7;
 
 const initialState = {
     table: startUpTable(),
-    openNodes: emptyNodes(),
-    closedNodes: emptyNodes(),
+    openNodes: Map(),
+    closedNodes: Map(),
     mode: modes.RUN,
     editObjectType: objectTypes.FREE,
     stepState: stepState.INIT,
@@ -26,8 +26,8 @@ const initialState = {
 const resetTable = (state) => {
     return {
         ...state,
-        openNodes: emptyNodes(),
-        closedNodes: emptyNodes(),
+        openNodes: Map(),
+        closedNodes: Map(),
         table: emptyTable(tableWidth, tableHeight)
     };
 };

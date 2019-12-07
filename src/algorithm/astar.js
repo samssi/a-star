@@ -7,6 +7,7 @@ import * as objectTypes from "../redux/objectTypes";
 import {PATH} from "../redux/objectTypes";
 import {H_COST} from "../redux/stepState";
 import {FGH_COST} from "../redux/stepState";
+import {findLowestCost} from "./lowestCost";
 
 export const nextStep = (state) => {
   switch (state.stepState) {
@@ -24,8 +25,6 @@ export const nextStep = (state) => {
     case stepState.FGH_COST_NEXT:
       return fghCalculator.calculateFghCosts(state);
     case stepState.FGH_COST_LOWEST:
-      return {
-        stepInfo: "Finding the lowest valued cell. Not implemented yet!"
-      }
+      return findLowestCost(state);
   }  
 };
