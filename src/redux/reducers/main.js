@@ -6,9 +6,13 @@ import * as stepState from "../stepState"
 import * as R from "ramda";
 import { emptyTable, startUpTable } from "../../algorithm/control";
 
+const tableWidth = 12;
+const tableHeight = 7;
 
 const initialState = {
     table: startUpTable(),
+    openNodesTable: emptyTable(tableWidth, tableHeight),
+    closedNodesTable: emptyTable(tableWidth, tableHeight),
     mode: modes.RUN,
     editObjectType: objectTypes.FREE,
     stepState: stepState.INIT,
@@ -19,7 +23,7 @@ const initialState = {
 };
 
 const resetTable = (state) => {
-    const newTable = emptyTable(12, 7);
+    const newTable = emptyTable(tableWidth, tableHeight);
     return {
         ...state,
         table: newTable
