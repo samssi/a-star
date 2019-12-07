@@ -1,30 +1,37 @@
 import * as R from "ramda";
-import {mutateCell, surroundingCells} from "./control";
-import {OPEN} from "../redux/objectTypes";
+import {surroundingCells, updateMovesToTable, updateNodesToTable, updateObjectTypeToTable} from "./control";
 import {hPath} from "./hCalculator";
 import {FGH_COST_LOWEST} from "../redux/stepState";
+import {addNode, node} from "./nodeMap";
+import {OPEN} from "../redux/objectTypes";
 
-const drawToTable = (table, cell, startPosition, endPosition) => {
+const updateOpenNodes = (table, openNodes, cell, startPosition, endPosition) => {
     const hPathCost = hPath(table, cell, endPosition).totalPathCost;
     // TODO: using heuristic calculation is temp. Heuristics doesn't calculate around objects but direct path through them!
     const gPathCost = hPath(table, cell, startPosition).totalPathCost;
     const fCost = hPathCost + gPathCost;
-    mutateCell(table, cell[0], cell[1], OPEN(gPathCost, hPathCost, fCost));
+    return addNode(openNodes, cell, OPEN(gPathCost, hPathCost, fCost));
 };
 
-const calculateFgh = (table, cells, startPosition, endPosition) => {
-    R.forEach(cell => {
-      drawToTable(table, cell, startPosition, endPosition);
-    }, cells);
-    return table;
+const calculateFgh = (table, openNodes, cells, startPosition, endPosition) => {
+    const untilCellsExhausted = (openNodes, cells) => {
+        if (cells.isEmpty()) {
+            return openNodes;
+        }
+        const newOpenNodes = updateOpenNodes(table, openNodes, cells.last(), startPosition, endPosition);
+        return untilCellsExhausted(newOpenNodes, cells.pop());
+    };
+    return untilCellsExhausted(openNodes, cells);
 };
 
 export const calculateFghCosts = (state) => {
-    const table = R.clone(state.table);
-    const cells = surroundingCells(table, state.currentPosition);
+    const cells = surroundingCells(state.table, state.currentPosition);
+    const openNodes = calculateFgh(state.table, state.openNodes, cells, state.startPosition, state.endPosition);
+    const table = updateNodesToTable(state.table, openNodes);
 
     return {
-        table: calculateFgh(table, cells, state.startPosition, state.endPosition),
+        table: table,
+        openNodes: openNodes,
         stepInfo: "Calculated FGH for next neighboring cells. Results visible",
         stepState: FGH_COST_LOWEST
     }
