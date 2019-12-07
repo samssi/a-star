@@ -49,9 +49,17 @@ class CellValues extends React.Component {
     return <div>&nbsp;</div>
   }
 
+  objectTypeEquals(item, objectType) {
+    return item.value === objectType.value;
+  }
+
+  openOrClosedObjectType() {
+    return this.objectTypeEquals(this.props.item, objectTypes.OPEN())
+        || this.objectTypeEquals(this.props.item, objectTypes.CLOSED());
+  }
 
   render() {
-    if (this.props.item.value === objectTypes.SURROUNDING().value) {
+    if (this.openOrClosedObjectType()) {
       return this.directionCosts(this.props.item);
     }
     else {
