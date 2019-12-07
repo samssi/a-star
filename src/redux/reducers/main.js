@@ -4,11 +4,11 @@ import * as modes from "../modes";
 import * as astar from "../../algorithm/astar"
 import * as stepState from "../stepState"
 import * as R from "ramda";
-import { emptyTable, initTable } from "../../algorithm/control";
+import { emptyTable, startUpTable } from "../../algorithm/control";
 
 
 const initialState = {
-    table: initTable(),
+    table: startUpTable(),
     mode: modes.RUN,
     editObjectType: objectTypes.FREE,
     stepState: stepState.INIT,
