@@ -7,6 +7,21 @@ const mapIndexed = R.addIndex(R.map);
 
 export const emptyTable = (width, height) => R.times(() => R.repeat(FREE, width), height);
 
+export const mutateCell = (table, x, y, object) => {
+    table[y][x] = object;
+    return table;
+};
+
+export const initTable = () => {
+    const table = emptyTable(12, 9);
+    mutateCell(table, 0,3, START);
+    mutateCell(table, 1, 3, OBSTACLE);
+    mutateCell(table, 1, 4, OBSTACLE);
+    mutateCell(table, 0, 4, OBSTACLE);
+    mutateCell(table, 3,8, END);
+    return table;
+};
+
 export const moveObject = (direction, distance) => {
     return {
         direction: direction,
@@ -162,11 +177,6 @@ export const pathObject = (cost, path, position) => {
 export const addCost = (previousCost, currentDirection) => {
     if (direction.DIAGONAL_DIRECTIONS.includes(currentDirection)) return previousCost + 15;
     return previousCost + 10;
-};
-
-export const mutateCell = (table, x, y, object) => {
-    table[y][x] = object;
-    return table;
 };
 
 export const freeTypeFromTable = (state, objectTypeToRemove) => {
