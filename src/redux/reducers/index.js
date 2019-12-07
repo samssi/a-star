@@ -1,4 +1,4 @@
 import { combineReducers } from "redux";
-import table from "./table"
+import main from "./main"
 
-export default combineReducers({table});
+export default combineReducers({main});

@@ -4,7 +4,7 @@ import {plotCell, editType, toggleMode, nextStep} from "../redux/actions";
 
 
 const mapStateToProps = (state) => {
-    return { table: state.table }
+    return { main: state.main }
 }
 
 const mapDispatchToProps = (dispatch) => {
