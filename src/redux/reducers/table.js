@@ -4,20 +4,8 @@ import * as modes from "../modes";
 import * as astar from "../../algorithm/astar"
 import * as stepState from "../stepState"
 import * as R from "ramda";
-import {START} from "../objectTypes";
-import {emptyTable, mutateCell} from "../../algorithm/control";
-import {END} from "../objectTypes";
-import {OBSTACLE} from "../objectTypes";
+import { emptyTable, initTable } from "../../algorithm/control";
 
-const initTable = () => {
-  const table = emptyTable(12, 9);
-  mutateCell(table, 0,3, START);
-  mutateCell(table, 1, 3, OBSTACLE);
-  mutateCell(table, 1, 4, OBSTACLE);
-  mutateCell(table, 0, 4, OBSTACLE);
-  mutateCell(table, 3,8, END);
-  return table;
-};
 
 const initialState = {
     table: initTable(),
