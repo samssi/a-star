@@ -1,4 +1,6 @@
 import * as R from "ramda";
+import {mutateCell} from "./control";
+import {CURRENT} from "../redux/objectTypes";
 
 const positionObject = (cell, objectType) => {
   return {
@@ -27,11 +29,19 @@ const search = (openNodes) => {
     return checkForLowestCostUntilExhausted(openNodes, undefined);
 };
 
+const updateCurrentPositionToTable = (table, positionObject) => {
+    const newTable = R.clone(table);
+    mutateCell(newTable, positionObject.cell[0], positionObject.cell[1], CURRENT(positionObject.objectType.gCost, positionObject.objectType.hCost, positionObject.objectType.fCost));
+    return newTable;
+};
+
 export const findLowestCost = (state) => {
-    const lowestCost = search(state.openNodes);
+    const lowestCostObject = search(state.openNodes);
+    const currentPosition = lowestCostObject.cell;
     return {
         ...state,
-        currentPosition: lowestCost.cell,
-        stepInfo: `Selecting lowest cost position: ${lowestCost.cell}`
+        table: updateCurrentPositionToTable(state.table, lowestCostObject),
+        currentPosition: currentPosition,
+        stepInfo: `Selecting lowest cost position: ${currentPosition}`
     }
 };
