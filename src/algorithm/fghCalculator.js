@@ -1,8 +1,7 @@
 import * as R from "ramda";
-import {surroundingCells, updateMovesToTable, updateNodesToTable, updateObjectTypeToTable} from "./control";
+import {surroundingCells, updateNodesToTable} from "./control";
 import {hPath} from "./hCalculator";
 import {FGH_COST_LOWEST} from "../redux/stepState";
-import {addNode, node} from "./nodeMap";
 import {OPEN} from "../redux/objectTypes";
 
 const updateOpenNodes = (table, openNodes, cell, startPosition, endPosition) => {
@@ -10,7 +9,7 @@ const updateOpenNodes = (table, openNodes, cell, startPosition, endPosition) => 
     // TODO: using heuristic calculation is temp. Heuristics doesn't calculate around objects but direct path through them!
     const gPathCost = hPath(table, cell, startPosition).totalPathCost;
     const fCost = hPathCost + gPathCost;
-    return addNode(openNodes, cell, OPEN(gPathCost, hPathCost, fCost));
+    return openNodes.set(cell, OPEN(gPathCost, hPathCost, fCost));
 };
 
 const calculateFgh = (table, openNodes, cells, startPosition, endPosition) => {
