@@ -17,7 +17,6 @@ export const startUpTable = () => {
     const table = emptyTable(12, 9);
     mutateCell(table, 0,3, START);
     mutateCell(table, 1, 3, OBSTACLE);
-    mutateCell(table, 1, 4, OBSTACLE);
     mutateCell(table, 0, 4, OBSTACLE);
     mutateCell(table, 3,8, END);
     return table;
