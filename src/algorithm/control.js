@@ -12,7 +12,7 @@ export const mutateCell = (table, x, y, object) => {
     return table;
 };
 
-export const initTable = () => {
+export const startUpTable = () => {
     const table = emptyTable(12, 9);
     mutateCell(table, 0,3, START);
     mutateCell(table, 1, 3, OBSTACLE);
