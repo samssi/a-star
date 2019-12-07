@@ -2,6 +2,7 @@ import {START, END, FREE, OBSTACLE, PATH} from "../redux/objectTypes";
 import * as R from "ramda";
 import * as Immutable from "immutable";
 import * as direction from "./direction";
+import {List} from "immutable";
 
 const mapIndexed = R.addIndex(R.map);
 
@@ -37,17 +38,24 @@ export const searchTable = (table, objectType) => {
     )(xItems)), R.unnest)(table);
 };
 
-export const translateArrayToXY = (arrayElement) => {
-    return { x: arrayElement[1], y: arrayElement[0] }
+export const updateNodesToTable = (table, nodes) => {
+    const updateTableUntilOpenNodesExhausted = (table, nodes) => {
+        if(nodes.isEmpty()) {
+            return table;
+        }
+        const key = nodes.keySeq().last();
+        mutateCell(table, key[0], key[1], nodes.get(key));
+        return updateTableUntilOpenNodesExhausted(R.clone(table), nodes.remove(key));
+    };
+    return updateTableUntilOpenNodesExhausted(R.clone(table), nodes);
 };
 
 export const updateMovesToTable = (table, path) => {
     const newTable = R.clone(table);
     R.forEach((item) => {
-        const xy = translateArrayToXY(item);
-        const element = newTable[xy.x][xy.y];
+        const element = newTable[item[1]][item[0]];
         if(element.value === FREE.value) {
-            return newTable[xy.x][xy.y] = PATH;
+            return newTable[item[1]][item[0]] = PATH;
         }
     }, path);
 
@@ -74,6 +82,7 @@ const SW = (position) => {
     return W(sAddedPosition);
 };
 
+// TODO: make functional
 const N = (position) => {
     const newPosition = R.clone(position);
     newPosition[1] = newPosition[1] - 1;
@@ -99,7 +108,7 @@ const W = (position) => {
 };
 
 export const surroundingCells = (table, position) => {
-    const cells = [
+    const cells = List([
         controlledMove(table, direction.N, position),
         controlledMove(table, direction.NW, position),
         controlledMove(table, direction.NE, position),
@@ -107,8 +116,8 @@ export const surroundingCells = (table, position) => {
         controlledMove(table, direction.E, position),
         controlledMove(table, direction.SE, position),
         controlledMove(table, direction.SW, position),
-        controlledMove(table, direction.S, position)
-    ];
+        controlledMove(table, direction.S, position)]
+    );
     return R.reject(R.isNil, cells);
 };
 
@@ -188,7 +197,7 @@ export const freeTypeFromTable = (state, objectTypeToRemove) => {
 
 export const executeMoves = (moves, position) => {
     const startPosition = R.clone(position);
-    const path = Immutable.List();
+    const path = List();
 
     const untilMovesExecuted = (cost, position, direction, movesLeft, path) => {
         if (movesLeft <= 0) {
