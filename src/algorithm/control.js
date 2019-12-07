@@ -120,16 +120,14 @@ export const surroundingCells = (table, position) => {
     return R.reject(R.isNil, cells);
 };
 
-const outOfBoundsRule = (position) => (position[0] < 0 || position [1] < 0) ? undefined : position;
-
-const obstacleRule = (table, position) => R.equals(table[position[1]][position[0]], OBSTACLE) ? undefined : position;
+const outOfBoundsRule = (position) => (position[0] < 0 || position [1] < 0);
+const occupyRule = (table, position) => R.includes(table[position[1]][position[0]], [OBSTACLE, START, END]);
 
 const withPickUpRules = (table, position) => {
-    const outOfBoundFilterPosition = outOfBoundsRule(position);
-    if (R.not(R.isNil(outOfBoundFilterPosition))) {
-        return obstacleRule(table, outOfBoundFilterPosition);
+    if (outOfBoundsRule(position) || occupyRule(table, position)) {
+        return undefined;
     }
-    return outOfBoundFilterPosition;
+    return position;
 };
 
 export const controlledMove = (table, moveDirection, position) => {

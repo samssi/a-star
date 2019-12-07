@@ -1,6 +1,7 @@
 import * as R from "ramda";
 import {mutateCell} from "./control";
 import {CURRENT} from "../redux/objectTypes";
+import {FGH_COST_NEXT} from "../redux/stepState";
 
 const positionObject = (cell, objectType) => {
   return {
@@ -42,6 +43,7 @@ export const findLowestCost = (state) => {
         ...state,
         table: updateCurrentPositionToTable(state.table, lowestCostObject),
         currentPosition: currentPosition,
-        stepInfo: `Selecting lowest cost position: ${currentPosition}`
+        stepInfo: `Selecting lowest cost position: ${currentPosition}`,
+        stepState: FGH_COST_NEXT
     }
 };
