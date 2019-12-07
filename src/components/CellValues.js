@@ -1,5 +1,7 @@
 import React from 'react';
 import * as objectTypes from "../redux/objectTypes";
+import {costContaining} from "../redux/objectTypes";
+import * as R from "ramda";
 
 const contentStyle = {
   fontSize: "10px"
@@ -49,18 +51,12 @@ class CellValues extends React.Component {
     return <div>&nbsp;</div>
   }
 
-  objectTypeEquals(item, objectType) {
-    return item.value === objectType.value;
-  }
-
-  costContainingObjectType() {
-    return this.objectTypeEquals(this.props.item, objectTypes.OPEN())
-        || this.objectTypeEquals(this.props.item, objectTypes.CLOSED())
-        || this.objectTypeEquals(this.props.item, objectTypes.CURRENT());
+  isCostContainingObjectType() {
+    return R.includes(this.props.item.value, costContaining);
   }
 
   render() {
-    if (this.costContainingObjectType()) {
+    if (this.isCostContainingObjectType()) {
       return this.directionCosts(this.props.item);
     }
     else {
