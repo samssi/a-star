@@ -11,3 +11,4 @@ export const OPEN = (gCost = -1, hCost = -1, fCost = -1) => { return { value: 7,
 export const CLOSED = (gCost = -1, hCost = -1, fCost = -1) => { return { value: 6, description: "Closed", color: "#E69383", gCost, hCost, fCost }};
 
 export const allTypes = [FREE, OBSTACLE, START, END, PATH, RESET];
+export const costContaining = [ CURRENT().value, OPEN().value, CLOSED().value ];
