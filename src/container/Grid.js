@@ -5,7 +5,7 @@ import {plotCell, editType, toggleMode, nextStep} from "../redux/actions";
 
 const mapStateToProps = (state) => {
     return { main: state.main }
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
     return { 
@@ -14,6 +14,6 @@ const mapDispatchToProps = (dispatch) => {
         toggleMode: (currentMode) => dispatch(toggleMode(currentMode)),
         nextStep: () => dispatch(nextStep())
     }
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(GridView)
