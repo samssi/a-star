@@ -1,4 +1,4 @@
-import {START, END, FREE, OBSTACLE, PATH} from "../redux/objectTypes";
+import {START, END, FREE, OBSTACLE, PATH, CLOSED, CURRENT} from "../redux/objectTypes";
 import * as R from "ramda";
 import * as Immutable from "immutable";
 import * as direction from "./direction";
@@ -37,16 +37,23 @@ export const searchTable = (table, objectType) => {
     )(xItems)), R.unnest)(table);
 };
 
-export const updateNodesToTable = (table, nodes) => {
+/*export const updateNodesToTable = (table, nodes) => {
     const updateTableUntilOpenNodesExhausted = (table, nodes) => {
-        if(nodes.isEmpty()) {
+        if(R.isEmpty(nodes)) {
             return table;
         }
-        const key = nodes.keySeq().last();
+        const key = nodes.keys().next().value;
         mutateCell(table, key[0], key[1], nodes.get(key));
-        return updateTableUntilOpenNodesExhausted(R.clone(table), nodes.remove(key));
+        nodes.delete(key);
+        return updateTableUntilOpenNodesExhausted(R.clone(table), R.clone(nodes));
     };
-    return updateTableUntilOpenNodesExhausted(R.clone(table), nodes);
+    return updateTableUntilOpenNodesExhausted(R.clone(table), R.clone(nodes));
+};*/
+
+export const updateNodesToTable = (table, nodes) => {
+    const newTable = R.clone(table);
+    R.forEach(node => mutateCell(newTable, node.x, node.y, node.object), nodes);
+    return newTable;
 };
 
 export const updateMovesToTable = (table, path) => {
@@ -106,48 +113,57 @@ const W = (position) => {
     return newPosition;
 };
 
-export const surroundingCells = (table, position) => {
+export const surroundingCells = (table, closedNodes, position) => {
     const cells = List([
-        controlledMove(table, direction.N, position),
-        controlledMove(table, direction.NW, position),
-        controlledMove(table, direction.NE, position),
-        controlledMove(table, direction.W, position),
-        controlledMove(table, direction.E, position),
-        controlledMove(table, direction.SE, position),
-        controlledMove(table, direction.SW, position),
-        controlledMove(table, direction.S, position)]
+        controlledMove(table, closedNodes, direction.N, position),
+        controlledMove(table, closedNodes, direction.NW, position),
+        controlledMove(table, closedNodes, direction.NE, position),
+        controlledMove(table, closedNodes, direction.W, position),
+        controlledMove(table, closedNodes, direction.E, position),
+        controlledMove(table, closedNodes, direction.SE, position),
+        controlledMove(table, closedNodes, direction.SW, position),
+        controlledMove(table, closedNodes, direction.S, position)]
     );
     return R.reject(R.isNil, cells);
 };
 
 const outOfBoundsRule = (position) => (position[0] < 0 || position [1] < 0);
-const occupyRule = (table, position) => R.includes(table[position[1]][position[0]], [OBSTACLE, START, END]);
+const occupyRule = (table, position) => R.includes(table[position[1]][position[0]].value, [OBSTACLE.value, START.value, END.value]);
+const closedRule = (closedNodes, position) => {
+    console.log(closedNodes)
+};
 
-const withPickUpRules = (table, position) => {
-    if (outOfBoundsRule(position) || occupyRule(table, position)) {
+const withPickUpRules = (table, closedNodes, position) => {
+    if (outOfBoundsRule(position) || occupyRule(table, position) || closedRule(closedNodes, position)) {
         return undefined;
     }
     return position;
 };
 
-export const controlledMove = (table, moveDirection, position) => {
+export const updateCurrentPositionToTable = (table, nodeObject) => {
+    const newTable = R.clone(table);
+    mutateCell(newTable, nodeObject.x, nodeObject.y, CURRENT(nodeObject.object.gCost, nodeObject.object.hCost, nodeObject.object.fCost));
+    return newTable;
+};
+
+export const controlledMove = (table, closedNodes, moveDirection, position) => {
     switch (moveDirection) {
         case direction.N:
-            return withPickUpRules(table, N(position));
+            return withPickUpRules(table, closedNodes, N(position));
         case direction.NE:
-            return withPickUpRules(table, NE(position));
+            return withPickUpRules(table, closedNodes, NE(position));
         case direction.NW:
-            return withPickUpRules(table, NW(position));
+            return withPickUpRules(table, closedNodes, NW(position));
         case direction.S:
-            return withPickUpRules(table, S(position));
+            return withPickUpRules(table, closedNodes, S(position));
         case direction.SW:
-            return withPickUpRules(table, SW(position));
+            return withPickUpRules(table, closedNodes, SW(position));
         case direction.SE:
-            return withPickUpRules(table, SE(position));
+            return withPickUpRules(table, closedNodes, SE(position));
         case direction.E:
-            return withPickUpRules(table, E(position));
+            return withPickUpRules(table, closedNodes, E(position));
         case direction.W:
-            return withPickUpRules(table, W(position));
+            return withPickUpRules(table, closedNodes, W(position));
         default:
             return undefined;
     }

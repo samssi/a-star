@@ -1,48 +1,24 @@
 import * as R from "ramda";
-import {mutateCell} from "./control";
-import {CURRENT} from "../redux/objectTypes";
+import {mutateCell, updateCurrentPositionToTable, updateNodesToTable} from "./control";
 import {FGH_COST_NEXT} from "../redux/stepState";
+import {CLOSED} from "../redux/objectTypes";
 
-const positionObject = (cell, objectType) => {
-  return {
-    cell,
-    objectType
-  };
-};
-
-const lowCostRules = (nillableNode, node2) => {
-    if (R.isNil(nillableNode)) {
-        return node2;
-    }
-    return nillableNode.objectType.fCost < node2.objectType.fCost ? nillableNode : node2;
-};
-
-const search = (openNodes) => {
-    const checkForLowestCostUntilExhausted = (openNodes, lowestCostNode) => {
-        if(openNodes.isEmpty()) {
-            return lowestCostNode;
-        }
-        const key = openNodes.keySeq().last();
-        const currentNode = positionObject(key, openNodes.get(key));
-        const newLowestCostNode = lowCostRules(lowestCostNode, currentNode);
-        return checkForLowestCostUntilExhausted(openNodes.remove(key), newLowestCostNode);
-    };
-    return checkForLowestCostUntilExhausted(openNodes, undefined);
-};
-
-const updateCurrentPositionToTable = (table, positionObject) => {
-    const newTable = R.clone(table);
-    mutateCell(newTable, positionObject.cell[0], positionObject.cell[1], CURRENT(positionObject.objectType.gCost, positionObject.objectType.hCost, positionObject.objectType.fCost));
-    return newTable;
-};
+const descByFCost = R.ascend(R.path(['object', 'fCost']));
+const searchForLowestCost = (openNodes) => R.sort(descByFCost, openNodes)[0];
 
 export const findLowestCost = (state) => {
-    const lowestCostObject = search(state.openNodes);
-    const currentPosition = lowestCostObject.cell;
+    const lowestCostObject = searchForLowestCost(state.openNodes);
+    //const closedNodes = R.append(lowestCostObject, state.closedNodes);
+    const closedNodes = R.append({...lowestCostObject,
+        object: CLOSED(lowestCostObject.object.gCost, lowestCostObject.object.hCost, lowestCostObject.object.fCost)}
+        , state.closedNodes);
+    const currentPosition = [lowestCostObject.x, lowestCostObject.y];
+
     return {
         ...state,
         table: updateCurrentPositionToTable(state.table, lowestCostObject),
         currentPosition: currentPosition,
+        closedNodes: closedNodes,
         stepInfo: `Selecting lowest cost position: ${currentPosition}`,
         stepState: FGH_COST_NEXT
     }

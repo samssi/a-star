@@ -12,3 +12,5 @@ export const CLOSED = (gCost = -1, hCost = -1, fCost = -1) => { return { value: 
 
 export const allTypes = [FREE, OBSTACLE, START, END, PATH, RESET];
 export const costContaining = [ CURRENT().value, OPEN().value, CLOSED().value ];
+
+export const NodeObject = (x, y, object) => { return { x, y, object } };
