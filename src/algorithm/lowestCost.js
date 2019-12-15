@@ -7,8 +7,8 @@ const descByFCost = R.ascend(R.path(['object', 'fCost']));
 const searchForLowestCost = (openNodes) => R.sort(descByFCost, openNodes)[0];
 
 export const findLowestCost = (state) => {
+    console.log(state.openNodes);
     const lowestCostObject = searchForLowestCost(state.openNodes);
-    //const closedNodes = R.append(lowestCostObject, state.closedNodes);
     const closedNodes = R.append({...lowestCostObject,
         object: CLOSED(lowestCostObject.object.gCost, lowestCostObject.object.hCost, lowestCostObject.object.fCost)}
         , state.closedNodes);

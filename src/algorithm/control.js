@@ -1,8 +1,6 @@
 import {START, END, FREE, OBSTACLE, PATH, CLOSED, CURRENT} from "../redux/objectTypes";
 import * as R from "ramda";
-import * as Immutable from "immutable";
 import * as direction from "./direction";
-import {List} from "immutable";
 
 const mapIndexed = R.addIndex(R.map);
 
@@ -36,19 +34,6 @@ export const searchTable = (table, objectType) => {
         R.reject(R.equals(false))
     )(xItems)), R.unnest)(table);
 };
-
-/*export const updateNodesToTable = (table, nodes) => {
-    const updateTableUntilOpenNodesExhausted = (table, nodes) => {
-        if(R.isEmpty(nodes)) {
-            return table;
-        }
-        const key = nodes.keys().next().value;
-        mutateCell(table, key[0], key[1], nodes.get(key));
-        nodes.delete(key);
-        return updateTableUntilOpenNodesExhausted(R.clone(table), R.clone(nodes));
-    };
-    return updateTableUntilOpenNodesExhausted(R.clone(table), R.clone(nodes));
-};*/
 
 export const updateNodesToTable = (table, nodes) => {
     const newTable = R.clone(table);
@@ -114,7 +99,7 @@ const W = (position) => {
 };
 
 export const surroundingCells = (table, closedNodes, position) => {
-    const cells = List([
+    const cells = [
         controlledMove(table, closedNodes, direction.N, position),
         controlledMove(table, closedNodes, direction.NW, position),
         controlledMove(table, closedNodes, direction.NE, position),
@@ -122,15 +107,14 @@ export const surroundingCells = (table, closedNodes, position) => {
         controlledMove(table, closedNodes, direction.E, position),
         controlledMove(table, closedNodes, direction.SE, position),
         controlledMove(table, closedNodes, direction.SW, position),
-        controlledMove(table, closedNodes, direction.S, position)]
-    );
+        controlledMove(table, closedNodes, direction.S, position)];
     return R.reject(R.isNil, cells);
 };
 
 const outOfBoundsRule = (position) => (position[0] < 0 || position [1] < 0);
 const occupyRule = (table, position) => R.includes(table[position[1]][position[0]].value, [OBSTACLE.value, START.value, END.value]);
 const closedRule = (closedNodes, position) => {
-    console.log(closedNodes)
+
 };
 
 const withPickUpRules = (table, closedNodes, position) => {
@@ -210,15 +194,15 @@ export const freeTypeFromTable = (state, objectTypeToRemove) => {
 
 export const executeMoves = (moves, position) => {
     const startPosition = R.clone(position);
-    const path = List();
+    const path = [];
 
     const untilMovesExecuted = (cost, position, direction, movesLeft, path) => {
         if (movesLeft <= 0) {
             return pathObject(cost, path, position)
         }
         const newPosition = move(direction, position);
-        const newPath = path.push(newPosition);
-        return untilMovesExecuted(addCost(cost, direction), newPosition, direction, movesLeft-1, newPath)
+        path.push(newPosition);
+        return untilMovesExecuted(addCost(cost, direction), newPosition, direction, movesLeft-1, R.clone(path))
     };
-    return untilMovesExecuted(0, startPosition, moves.direction, moves.distance, path);
+    return untilMovesExecuted(0, startPosition, moves.direction, moves.distance, R.clone(path));
 };
