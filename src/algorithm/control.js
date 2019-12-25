@@ -37,6 +37,17 @@ export const putNodeObject = (nodeObjects, nodeObject) => {
         : nodeObjects;
 };
 
+const returnHigher = (node1, node2) => {
+    return node1.object.gCost < node2.object.gCost
+        ? node1 : node2;
+};
+export const resolveByHighestGCost = (nodeObjects, nodeObject) => {
+    const existingNode = findNodeObject(nodeObject.x, nodeObject.y, nodeObjects);
+    return R.isNil(existingNode)
+        ? nodeObject
+        : returnHigher(existingNode, nodeObject);
+};
+
 export const moveObject = (direction, distance) => {
     return {
         direction: direction,
