@@ -16,6 +16,8 @@ export const findLowestCost = (state) => {
     const lowestCostObject = searchForLowestCost(state.openNodes);
     const closedNodes = putNodeObject(state.closedNodes, lowestCostObject);
     const currentPosition = [lowestCostObject.x, lowestCostObject.y];
+    console.log('closed nodes:')
+    console.log(closedNodes)
 
     return {
         ...state,

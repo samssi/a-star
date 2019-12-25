@@ -23,8 +23,10 @@ const calculateFgh = (table, openNodes, cells, startPosition, endPosition, curre
 
 export const calculateFghCosts = (state) => {
     const cells = surroundingCells(state.table, state.closedNodes, state.currentPosition);
+    // TODO: filter cells from open nodes based on which has lower gCost
     // TODO: append instead of replace, remove closed node from open
-    const openNodes = calculateFgh(state.table, state.openNodes, cells, state.startPosition, state.endPosition, state.currentPosition, state.closedNodes);
+    const newOpenNodeObjects = calculateFgh(state.table, state.openNodes, cells, state.startPosition, state.endPosition, state.currentPosition, state.closedNodes);
+    const openNodes = R.concat(state.openNodes, newOpenNodeObjects);
     const table = updateNodesToTable(state.table, openNodes);
     const nextTable = updateNodesToTable(table, state.closedNodes);
 

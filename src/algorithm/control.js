@@ -141,13 +141,10 @@ export const surroundingCells = (table, closedNodes, position) => {
 };
 
 const outOfBoundsRule = (position) => (position[0] < 0 || position [1] < 0);
-const occupyRule = (table, position) => R.includes(table[position[1]][position[0]].value, [OBSTACLE.value, START.value, END.value]);
-const closedRule = (closedNodes, position) => {
-
-};
+const occupyRule = (table, position) => R.includes(table[position[1]][position[0]].value, [OBSTACLE.value, START.value, END.value, CLOSED().value]);
 
 const withPickUpRules = (table, closedNodes, position) => {
-    if (outOfBoundsRule(position) || occupyRule(table, position) || closedRule(closedNodes, position)) {
+    if (outOfBoundsRule(position) || occupyRule(table, position)) {
         return undefined;
     }
     return position;
