@@ -1,5 +1,6 @@
 import * as R from "ramda";
 import {
+    findNodeObject,
     mutateCell,
     putClosedNode, putNodeObject,
     updateCurrentPositionToTable,

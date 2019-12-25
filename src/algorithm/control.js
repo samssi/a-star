@@ -38,7 +38,8 @@ export const putNodeObject = (nodeObjects, nodeObject) => {
 };
 
 const returnHigher = (node1, node2) => {
-    return node1.object.gCost < node2.object.gCost
+    // TODO: temp flip as gcost isn't calculated correctly
+    return node1.object.gCost > node2.object.gCost
         ? node1 : node2;
 };
 export const resolveByHighestGCost = (nodeObjects, nodeObject) => {

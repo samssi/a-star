@@ -19,7 +19,8 @@ const initialState = {
     stepInfo: "Astar ready!",
     startPosition: [-1,-1],
     endPosition: [-1,-1],
-    currentPosition: [-1,-1]
+    currentPosition: [-1,-1],
+    previousPosition: [-1, -1]
 };
 
 const resetTable = (state) => {
