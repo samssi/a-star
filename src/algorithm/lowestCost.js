@@ -1,7 +1,7 @@
 import * as R from "ramda";
 import {
     mutateCell,
-    putClosedNode,
+    putClosedNode, putNodeObject,
     updateCurrentPositionToTable,
     updateNodesToTable
 } from "./control";
@@ -13,9 +13,7 @@ const searchForLowestCost = (openNodes) => R.sort(descByFCost, openNodes)[0];
 
 export const findLowestCost = (state) => {
     const lowestCostObject = searchForLowestCost(state.openNodes);
-    console.log('lcost:' + JSON.stringify(lowestCostObject));
-    const closedNodes = putClosedNode(state.closedNodes, lowestCostObject);
-    console.log(closedNodes);
+    const closedNodes = putNodeObject(state.closedNodes, lowestCostObject);
     const currentPosition = [lowestCostObject.x, lowestCostObject.y];
 
     return {
