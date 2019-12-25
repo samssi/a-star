@@ -10,8 +10,8 @@ import {hPath} from "./hCalculator";
 import {FGH_COST_LOWEST} from "../redux/stepState";
 import {CLOSED, NodeObject, OPEN} from "../redux/objectTypes";
 
-const calculateFgh = (table, openNodes, cells, startPosition, endPosition, currentPosition) => {
-    const currentPositionNode = findNodeObject(currentPosition[0], currentPosition[1], openNodes);
+const calculateFgh = (table, openNodes, cells, startPosition, endPosition, currentPosition, closedNodes) => {
+    const currentPositionNode = findNodeObject(currentPosition[0], currentPosition[1], closedNodes);
     return R.map(cell => {
         const hPathCost = hPath(table, cell, endPosition).totalPathCost;
         // TODO: calculate parents together on the path
@@ -23,7 +23,8 @@ const calculateFgh = (table, openNodes, cells, startPosition, endPosition, curre
 
 export const calculateFghCosts = (state) => {
     const cells = surroundingCells(state.table, state.closedNodes, state.currentPosition);
-    const openNodes = calculateFgh(state.table, state.openNodes, cells, state.startPosition, state.endPosition, state.currentPosition);
+    // TODO: append instead of replace, remove closed node from open
+    const openNodes = calculateFgh(state.table, state.openNodes, cells, state.startPosition, state.endPosition, state.currentPosition, state.closedNodes);
     const table = updateNodesToTable(state.table, openNodes);
     const nextTable = updateNodesToTable(table, state.closedNodes);
 
