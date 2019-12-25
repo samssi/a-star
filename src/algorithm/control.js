@@ -20,6 +20,23 @@ export const startUpTable = () => {
     return table;
 };
 
+export const findClosedNode = (x, y, closedNodes) => {
+    return R.find(R.and(R.propEq('x', x), R.propEq('y', y)), closedNodes);
+};
+
+export const appendClosedNode = (closedNodes, object) => {
+    return R.append({...object,
+            object: CLOSED(object.object.gCost, object.object.hCost, object.object.fCost)},
+        closedNodes);
+};
+
+export const putClosedNode = (closedNodes, object) => {
+    const oldNode = findClosedNode(object.x, object.y, closedNodes);
+    return R.isNil(oldNode)
+        ? appendClosedNode(closedNodes, object)
+        : closedNodes;
+};
+
 export const moveObject = (direction, distance) => {
     return {
         direction: direction,
