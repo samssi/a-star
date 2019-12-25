@@ -26,5 +26,5 @@ export const nextStep = (state) => {
       return fghCalculator.calculateFghCosts(state);
     case stepState.FGH_COST_LOWEST:
       return findLowestCost(state);
-  }  
+  }
 };
