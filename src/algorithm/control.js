@@ -2,6 +2,9 @@ import {START, END, FREE, OBSTACLE, PATH, CLOSED, CURRENT} from "../redux/object
 import * as R from "ramda";
 import * as direction from "./direction";
 
+export const DIAGONAL_COST = 15;
+export const HORIZONTAL_VERTICAL_COST = 10;
+
 const mapIndexed = R.addIndex(R.map);
 
 export const emptyTable = (width, height) => R.times(() => R.repeat(FREE, width), height);
@@ -37,16 +40,16 @@ export const putNodeObject = (nodeObjects, nodeObject) => {
         : nodeObjects;
 };
 
-const returnHigher = (node1, node2) => {
+const returnLower = (node1, node2) => {
     return node1.object.gCost < node2.object.gCost
         ? node1 : node2;
 };
 
-export const resolveByHighestGCost = (nodeObjects, nodeObject) => {
+export const resolveByLowestGCost = (nodeObjects, nodeObject) => {
     const existingNode = findNodeObject(nodeObject.x, nodeObject.y, nodeObjects);
     return R.isNil(existingNode)
         ? nodeObject
-        : returnHigher(existingNode, nodeObject);
+        : returnLower(existingNode, nodeObject);
 };
 
 export const moveObject = (direction, distance) => {
@@ -143,11 +146,11 @@ export const surroundingCells = (table, closedNodes, position) => {
 const outOfBoundsRule = (position) => (position[0] < 0 || position [1] < 0);
 const occupyRule = (table, position) => R.includes(table[position[1]][position[0]].value, [OBSTACLE.value, START.value, END.value, CLOSED().value]);
 
-const withPickUpRules = (table, closedNodes, position) => {
+const withPickUpRules = (table, closedNodes, position, moveGCost) => {
     if (outOfBoundsRule(position) || occupyRule(table, position)) {
         return undefined;
     }
-    return position;
+    return { position, moveGCost };
 };
 
 export const updateCurrentPositionToTable = (table, nodeObject) => {
@@ -156,24 +159,25 @@ export const updateCurrentPositionToTable = (table, nodeObject) => {
     return newTable;
 };
 
+
 export const controlledMove = (table, closedNodes, moveDirection, position) => {
     switch (moveDirection) {
         case direction.N:
-            return withPickUpRules(table, closedNodes, N(position));
+            return withPickUpRules(table, closedNodes, N(position), HORIZONTAL_VERTICAL_COST);
         case direction.NE:
-            return withPickUpRules(table, closedNodes, NE(position));
+            return withPickUpRules(table, closedNodes, NE(position), DIAGONAL_COST);
         case direction.NW:
-            return withPickUpRules(table, closedNodes, NW(position));
+            return withPickUpRules(table, closedNodes, NW(position), DIAGONAL_COST);
         case direction.S:
-            return withPickUpRules(table, closedNodes, S(position));
+            return withPickUpRules(table, closedNodes, S(position), HORIZONTAL_VERTICAL_COST);
         case direction.SW:
-            return withPickUpRules(table, closedNodes, SW(position));
+            return withPickUpRules(table, closedNodes, SW(position), DIAGONAL_COST);
         case direction.SE:
-            return withPickUpRules(table, closedNodes, SE(position));
+            return withPickUpRules(table, closedNodes, SE(position), DIAGONAL_COST);
         case direction.E:
-            return withPickUpRules(table, closedNodes, E(position));
+            return withPickUpRules(table, closedNodes, E(position), HORIZONTAL_VERTICAL_COST);
         case direction.W:
-            return withPickUpRules(table, closedNodes, W(position));
+            return withPickUpRules(table, closedNodes, W(position), HORIZONTAL_VERTICAL_COST);
         default:
             return undefined;
     }
@@ -207,8 +211,8 @@ export const pathObject = (cost, path, position) => {
 };
 
 export const addCost = (previousCost, currentDirection) => {
-    if (direction.DIAGONAL_DIRECTIONS.includes(currentDirection)) return previousCost + 15;
-    return previousCost + 10;
+    if (direction.DIAGONAL_DIRECTIONS.includes(currentDirection)) return previousCost + DIAGONAL_COST;
+    return previousCost + HORIZONTAL_VERTICAL_COST;
 };
 
 export const freeTypeFromTable = (state, objectTypeToRemove) => {

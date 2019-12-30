@@ -2,7 +2,7 @@ import * as R from "ramda";
 import {
     findNodeObject,
     mutateCell,
-    resolveByHighestGCost,
+    resolveByHighestGCost, resolveByLowestGCost,
     surroundingCells,
     updateNodesToTable
 } from "./control";
@@ -13,13 +13,15 @@ import {CLOSED, NodeObject, OPEN} from "../redux/objectTypes";
 const calculateFgh = (table, openNodes, cells, startPosition, endPosition, currentPosition, closedNodes) => {
     const currentPositionNode = findNodeObject(currentPosition[0], currentPosition[1], closedNodes);
     return R.map(cell => {
-        const hPathCost = hPath(table, cell, endPosition).totalPathCost;
+        const hPathCost = hPath(table, cell.position, endPosition).totalPathCost;
         // TODO: calculate parents together on the path
         //const gPathCost = hPath(table, cell, startPosition).totalPathCost;
-        const gPathCost = gPath();
+        console.log('currentPositionNode')
+        console.log(currentPositionNode)
+        const gPathCost = gPath(currentPositionNode, cell.moveGCost);
         const fCost = hPathCost + gPathCost;
-        return resolveByHighestGCost(openNodes,
-            NodeObject(cell[0], cell[1],
+        return resolveByLowestGCost(openNodes,
+            NodeObject(cell.position[0], cell.position[1],
             OPEN(gPathCost, hPathCost, fCost, currentPositionNode)));
     }, cells);
 };
@@ -31,7 +33,9 @@ const updateOpenNodes = (currentNodes, newNodes) => {
 
 export const calculateFghCosts = (state) => {
     const cells = surroundingCells(state.table, state.closedNodes, state.currentPosition);
-    // TODO: filter cells from open nodes based on which has lower gCost
+    console.log('cells')
+    console.log(cells)
+    // TODO: filter cells from open nodes based on which has lower gCost -- probably done
     // TODO: append instead of replace, remove closed node from open --> switch it to closed list
     const newOpenNodeObjects = calculateFgh(state.table, state.openNodes, cells, state.startPosition, state.endPosition, state.currentPosition, state.closedNodes);
     const openNodes = updateOpenNodes(state.openNodes, newOpenNodeObjects);
@@ -39,8 +43,8 @@ export const calculateFghCosts = (state) => {
     const nextTable = updateNodesToTable(table, state.closedNodes);
     //console.log('current position')
     //console.log(state.currentPosition)
-    //console.log('newOpenNodeObjects')
-    //console.log(newOpenNodeObjects)
+    console.log('newOpenNodeObjects')
+    console.log(newOpenNodeObjects)
     //console.log(openNodes)
     //console.log(nextTable)
 

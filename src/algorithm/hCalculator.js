@@ -82,8 +82,9 @@ export const hCostObject = (table, totalPathCost) => {
     };
 };
 
-export const gPath = () => {
-    return 0;
+export const gPath = (node, moveCost) => {
+    console.log(node.object.parent)
+    return moveCost;
 };
 
 export const hPath = (table, startPosition, endPosition) => {
