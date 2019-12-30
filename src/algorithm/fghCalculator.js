@@ -6,7 +6,7 @@ import {
     surroundingCells,
     updateNodesToTable
 } from "./control";
-import {hPath} from "./hCalculator";
+import {gPath, hPath} from "./hCalculator";
 import {FGH_COST_LOWEST} from "../redux/stepState";
 import {CLOSED, NodeObject, OPEN} from "../redux/objectTypes";
 
@@ -15,9 +15,12 @@ const calculateFgh = (table, openNodes, cells, startPosition, endPosition, curre
     return R.map(cell => {
         const hPathCost = hPath(table, cell, endPosition).totalPathCost;
         // TODO: calculate parents together on the path
-        const gPathCost = hPath(table, cell, startPosition).totalPathCost;
+        //const gPathCost = hPath(table, cell, startPosition).totalPathCost;
+        const gPathCost = gPath();
         const fCost = hPathCost + gPathCost;
-        return resolveByHighestGCost(openNodes, NodeObject(cell[0], cell[1], OPEN(gPathCost, hPathCost, fCost, currentPositionNode)));
+        return resolveByHighestGCost(openNodes,
+            NodeObject(cell[0], cell[1],
+            OPEN(gPathCost, hPathCost, fCost, currentPositionNode)));
     }, cells);
 };
 
@@ -29,12 +32,16 @@ const updateOpenNodes = (currentNodes, newNodes) => {
 export const calculateFghCosts = (state) => {
     const cells = surroundingCells(state.table, state.closedNodes, state.currentPosition);
     // TODO: filter cells from open nodes based on which has lower gCost
-    // TODO: append instead of replace, remove closed node from open
+    // TODO: append instead of replace, remove closed node from open --> switch it to closed list
     const newOpenNodeObjects = calculateFgh(state.table, state.openNodes, cells, state.startPosition, state.endPosition, state.currentPosition, state.closedNodes);
     const openNodes = updateOpenNodes(state.openNodes, newOpenNodeObjects);
     const table = updateNodesToTable(state.table, openNodes);
     const nextTable = updateNodesToTable(table, state.closedNodes);
-    console.log(openNodes)
+    //console.log('current position')
+    //console.log(state.currentPosition)
+    //console.log('newOpenNodeObjects')
+    //console.log(newOpenNodeObjects)
+    //console.log(openNodes)
     //console.log(nextTable)
 
     return {

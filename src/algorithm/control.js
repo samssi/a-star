@@ -26,7 +26,7 @@ export const findNodeObject = (x, y, nodes) => {
 
 export const appendNodeObject = (nodeObjects, nodeObject) => {
     return R.append({...nodeObject,
-            object: CLOSED(nodeObject.object.gCost, nodeObject.object.hCost, nodeObject.object.fCost)},
+            object: CLOSED(nodeObject.object.gCost, nodeObject.object.hCost, nodeObject.object.fCost, nodeObject.object.parent)},
         nodeObjects);
 };
 
@@ -38,10 +38,10 @@ export const putNodeObject = (nodeObjects, nodeObject) => {
 };
 
 const returnHigher = (node1, node2) => {
-    // TODO: temp flip as gcost isn't calculated correctly
-    return node1.object.gCost > node2.object.gCost
+    return node1.object.gCost < node2.object.gCost
         ? node1 : node2;
 };
+
 export const resolveByHighestGCost = (nodeObjects, nodeObject) => {
     const existingNode = findNodeObject(nodeObject.x, nodeObject.y, nodeObjects);
     return R.isNil(existingNode)
@@ -152,7 +152,7 @@ const withPickUpRules = (table, closedNodes, position) => {
 
 export const updateCurrentPositionToTable = (table, nodeObject) => {
     const newTable = R.clone(table);
-    mutateCell(newTable, nodeObject.x, nodeObject.y, CURRENT(nodeObject.object.gCost, nodeObject.object.hCost, nodeObject.object.fCost));
+    mutateCell(newTable, nodeObject.x, nodeObject.y, CURRENT(nodeObject.object.gCost, nodeObject.object.hCost, nodeObject.object.fCost, nodeObject.object.parent));
     return newTable;
 };
 

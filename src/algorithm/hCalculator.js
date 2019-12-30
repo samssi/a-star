@@ -82,6 +82,10 @@ export const hCostObject = (table, totalPathCost) => {
     };
 };
 
+export const gPath = () => {
+    return 0;
+};
+
 export const hPath = (table, startPosition, endPosition) => {
     const distance = calculateDistanceBetween(startPosition, endPosition);
 
