@@ -21,16 +21,21 @@ const calculateFgh = (table, openNodes, cells, startPosition, endPosition, curre
     }, cells);
 };
 
+const updateOpenNodes = (currentNodes, newNodes) => {
+    // TODO: if already on the list check if current path is better using G cost as measure
+    return R.concat(currentNodes, newNodes);
+};
+
 export const calculateFghCosts = (state) => {
     const cells = surroundingCells(state.table, state.closedNodes, state.currentPosition);
     // TODO: filter cells from open nodes based on which has lower gCost
     // TODO: append instead of replace, remove closed node from open
     const newOpenNodeObjects = calculateFgh(state.table, state.openNodes, cells, state.startPosition, state.endPosition, state.currentPosition, state.closedNodes);
-    const openNodes = R.concat(state.openNodes, newOpenNodeObjects);
+    const openNodes = updateOpenNodes(state.openNodes, newOpenNodeObjects);
     const table = updateNodesToTable(state.table, openNodes);
     const nextTable = updateNodesToTable(table, state.closedNodes);
-
-    console.log(nextTable)
+    console.log(openNodes)
+    //console.log(nextTable)
 
     return {
         table: nextTable,
