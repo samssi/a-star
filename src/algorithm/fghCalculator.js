@@ -30,7 +30,7 @@ export const calculateFghCosts = (state) => {
     const table = updateNodesToTable(state.table, openNodes);
     const nextTable = updateNodesToTable(table, state.closedNodes);
 
-    console.log(openNodes)
+    console.log(nextTable)
 
     return {
         table: nextTable,
