@@ -14,8 +14,7 @@ const calculateFgh = (table, openNodes, cells, startPosition, endPosition, curre
     const currentPositionNode = findNodeObject(currentPosition[0], currentPosition[1], closedNodes);
     return R.map(cell => {
         const hPathCost = hPath(table, cell.position, endPosition).totalPathCost;
-        // TODO: calculate parents together on the path
-        //const gPathCost = hPath(table, cell, startPosition).totalPathCost;
+        // TODO: calculate parents together on the path -- done
         console.log('currentPositionNode')
         console.log(currentPositionNode)
         const gPathCost = gPath(currentPositionNode, cell.moveGCost);
@@ -33,8 +32,8 @@ const updateOpenNodes = (currentNodes, newNodes) => {
 
 export const calculateFghCosts = (state) => {
     const cells = surroundingCells(state.table, state.closedNodes, state.currentPosition);
-    console.log('cells')
-    console.log(cells)
+    //console.log('cells')
+    //console.log(cells)
     // TODO: filter cells from open nodes based on which has lower gCost -- probably done
     // TODO: append instead of replace, remove closed node from open --> switch it to closed list
     const newOpenNodeObjects = calculateFgh(state.table, state.openNodes, cells, state.startPosition, state.endPosition, state.currentPosition, state.closedNodes);
@@ -43,8 +42,8 @@ export const calculateFghCosts = (state) => {
     const nextTable = updateNodesToTable(table, state.closedNodes);
     //console.log('current position')
     //console.log(state.currentPosition)
-    console.log('newOpenNodeObjects')
-    console.log(newOpenNodeObjects)
+    //console.log('newOpenNodeObjects')
+    //console.log(newOpenNodeObjects)
     //console.log(openNodes)
     //console.log(nextTable)
 

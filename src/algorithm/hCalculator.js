@@ -82,9 +82,17 @@ export const hCostObject = (table, totalPathCost) => {
     };
 };
 
+const traverseSumOfParents = (node) => {
+    const sum = (node, result = 0) => {
+        return R.isNil(node)
+        ? result
+        : sum(node.object.parent, result + node.object.gCost);
+    };
+    return sum(node);
+};
+
 export const gPath = (node, moveCost) => {
-    console.log(node.object.parent)
-    return moveCost;
+    return moveCost + traverseSumOfParents(node);
 };
 
 export const hPath = (table, startPosition, endPosition) => {
