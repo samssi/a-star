@@ -143,6 +143,7 @@ export const surroundingCells = (table, closedNodes, position) => {
     return R.reject(R.isNil, cells);
 };
 
+// TODO: position higher than table length should be filtered out too
 const outOfBoundsRule = (position) => (position[0] < 0 || position [1] < 0);
 const occupyRule = (table, position) => R.includes(table[position[1]][position[0]].value, [OBSTACLE.value, START.value, END.value, CLOSED().value]);
 
