@@ -9,14 +9,13 @@ import {
 import {gPath, hPath} from "./hCalculator";
 import {FGH_COST_LOWEST} from "../redux/stepState";
 import {CLOSED, NodeObject, OPEN} from "../redux/objectTypes";
+import {find} from "ramda";
 
 const calculateFgh = (table, openNodes, cells, startPosition, endPosition, currentPosition, closedNodes) => {
     const currentPositionNode = findNodeObject(currentPosition[0], currentPosition[1], closedNodes);
     return R.map(cell => {
         const hPathCost = hPath(table, cell.position, endPosition).totalPathCost;
         // TODO: calculate parents together on the path -- done
-        console.log('currentPositionNode')
-        console.log(currentPositionNode)
         const gPathCost = gPath(currentPositionNode, cell.moveGCost);
         const fCost = hPathCost + gPathCost;
         return resolveByLowestGCost(openNodes,
@@ -25,27 +24,36 @@ const calculateFgh = (table, openNodes, cells, startPosition, endPosition, curre
     }, cells);
 };
 
-const updateOpenNodes = (currentNodes, newNodes) => {
-    // TODO: if already on the list check if current path is better using G cost as measure
-    return R.concat(currentNodes, newNodes);
+const replaceWithNew = (oldOpenNode, newOpenNode, resultingNodes) => {
+    const result = R.filter(oldOpenNode => R.and(R.propEq(oldOpenNode.x, newOpenNode.x), R.propEq(oldOpenNode.y, newOpenNode.y)), resultingNodes);
+    return R.append(newOpenNode, result);
+};
+
+const concatNodes = (openNodes, newOpenNodes) => {
+    const concat = (openNodes, newOpenNodes, resultingNodes) => {
+        if (R.isEmpty(newOpenNodes)) {
+            return resultingNodes;
+        }
+
+        const newOpenNode = newOpenNodes.pop();
+        const oldOpenNode = findNodeObject(newOpenNode.x, newOpenNode.y, openNodes);
+
+        return R.isNil(oldOpenNode)
+            ? concat(openNodes, newOpenNodes, R.append(newOpenNode, resultingNodes))
+            : replaceWithNew(oldOpenNode, newOpenNode, resultingNodes);
+
+    };
+    return concat(openNodes, newOpenNodes, openNodes);
 };
 
 export const calculateFghCosts = (state) => {
     const cells = surroundingCells(state.table, state.closedNodes, state.currentPosition);
-    //console.log('cells')
-    //console.log(cells)
     // TODO: filter cells from open nodes based on which has lower gCost -- probably done
     // TODO: append instead of replace, remove closed node from open --> switch it to closed list
     const newOpenNodeObjects = calculateFgh(state.table, state.openNodes, cells, state.startPosition, state.endPosition, state.currentPosition, state.closedNodes);
-    const openNodes = updateOpenNodes(state.openNodes, newOpenNodeObjects);
+    const openNodes = concatNodes(state.openNodes, newOpenNodeObjects, state.currentPosition);
     const table = updateNodesToTable(state.table, openNodes);
     const nextTable = updateNodesToTable(table, state.closedNodes);
-    //console.log('current position')
-    //console.log(state.currentPosition)
-    //console.log('newOpenNodeObjects')
-    //console.log(newOpenNodeObjects)
-    //console.log(openNodes)
-    //console.log(nextTable)
 
     return {
         table: nextTable,
