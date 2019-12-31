@@ -33,7 +33,7 @@ const concatNodes = (openNodes, newOpenNodes) => {
         }
 
         const newOpenNode = newOpenNodes.pop();
-        const oldOpenNode = findNodeObject(newOpenNode.x, newOpenNode.y, openNodes);
+        const oldOpenNode = findNodeObject(newOpenNode.x, newOpenNode.y, resultingNodes);
 
         return R.isNil(oldOpenNode)
             ? concat(openNodes, newOpenNodes, R.append(newOpenNode, resultingNodes))
@@ -47,7 +47,8 @@ export const calculateFghCosts = (state) => {
     const cells = surroundingCells(state.table, state.closedNodes, state.currentPosition);
     const newOpenNodeObjects = calculateFgh(state.table, state.openNodes, cells, state.startPosition, state.endPosition, state.currentPosition, state.closedNodes);
     const concatenatedOpenNodes = concatNodes(state.openNodes, newOpenNodeObjects, state.currentPosition);
-    const openNodes = removeNodeObject(state.currentPosition[0], state.currentPosition[1], concatenatedOpenNodes);
+    const openNodes = removeNodeObject(state.currentPosition[1], state.currentPosition[0], concatenatedOpenNodes);
+
     const table = updateNodesToTable(state.table, openNodes);
     const nextTable = updateNodesToTable(table, state.closedNodes);
 

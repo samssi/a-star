@@ -24,7 +24,10 @@ export const startUpTable = () => {
 };
 
 export const findNodeObject = (x, y, nodes) => {
-    return R.find(R.and(R.propEq('x', x), R.propEq('y', y)), nodes);
+    const result = R.find(R.and(R.propEq('x', x), R.propEq('y', y)), nodes);
+    return R.isNil(result)
+        ? undefined
+        : result[0];
 };
 
 export const appendNodeObject = (nodeObjects, nodeObject) => {
