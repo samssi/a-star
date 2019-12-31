@@ -24,9 +24,12 @@ const calculateFgh = (table, openNodes, cells, startPosition, endPosition, curre
     }, cells);
 };
 
+const removeNodeObject = (x, y, nodes) => {
+    return R.filter(node => node.x !== x && node.y !== y, nodes);
+};
+
 const replaceWithNew = (oldOpenNode, newOpenNode, resultingNodes) => {
-    const result = R.filter(oldOpenNode => R.and(R.propEq(oldOpenNode.x, newOpenNode.x), R.propEq(oldOpenNode.y, newOpenNode.y)), resultingNodes);
-    return R.append(newOpenNode, result);
+    return R.append(newOpenNode, removeNodeObject(newOpenNode.x, newOpenNode.y, resultingNodes));
 };
 
 const concatNodes = (openNodes, newOpenNodes) => {
@@ -51,7 +54,10 @@ export const calculateFghCosts = (state) => {
     // TODO: filter cells from open nodes based on which has lower gCost -- probably done
     // TODO: append instead of replace, remove closed node from open --> switch it to closed list
     const newOpenNodeObjects = calculateFgh(state.table, state.openNodes, cells, state.startPosition, state.endPosition, state.currentPosition, state.closedNodes);
-    const openNodes = concatNodes(state.openNodes, newOpenNodeObjects, state.currentPosition);
+    const concatenatedOpenNodes = concatNodes(state.openNodes, newOpenNodeObjects, state.currentPosition);
+    console.log(concatenatedOpenNodes)
+    const openNodes = removeNodeObject(state.currentPosition[0], state.currentPosition[1], concatenatedOpenNodes);
+    console.log(openNodes)
     const table = updateNodesToTable(state.table, openNodes);
     const nextTable = updateNodesToTable(table, state.closedNodes);
 
