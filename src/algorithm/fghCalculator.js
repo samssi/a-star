@@ -1,8 +1,8 @@
 import * as R from "ramda";
 import {
+    findClosedNode,
     findNodeObject,
-    mutateCell,
-    resolveByHighestGCost, resolveByLowestGCost,
+    resolveByLowestGCost,
     surroundingCells,
     updateNodesToTable
 } from "./control";
@@ -12,7 +12,7 @@ import {CLOSED, NodeObject, OPEN} from "../redux/objectTypes";
 import {find} from "ramda";
 
 const calculateFgh = (table, openNodes, cells, startPosition, endPosition, currentPosition, closedNodes) => {
-    const currentPositionNode = findNodeObject(currentPosition[0], currentPosition[1], closedNodes);
+    const currentPositionNode = findClosedNode(currentPosition[0], currentPosition[1], closedNodes);
     return R.map(cell => {
         const hPathCost = hPath(table, cell.position, endPosition).totalPathCost;
         const gPathCost = gPath(currentPositionNode, cell.moveGCost);

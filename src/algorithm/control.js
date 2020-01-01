@@ -23,6 +23,10 @@ export const startUpTable = () => {
     return table;
 };
 
+export const findClosedNode = (x, y, closedNodes) => {
+    return R.find(R.and(R.propEq('x', x), R.propEq('y', y)), closedNodes);
+};
+
 export const findNodeObject = (x, y, nodes) => {
     const result = R.find(R.and(R.propEq('x', x), R.propEq('y', y)), nodes);
     return R.isNil(result)
