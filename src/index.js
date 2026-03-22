@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDom from "react-dom";
+import { createRoot } from "react-dom/client";
 
 import { Provider } from "react-redux";
 import store from "./redux/store"
@@ -7,10 +7,10 @@ import store from "./redux/store"
 import AStarApp from "./AStarApp";
 
 const rootElement = document.getElementById("root");
+const root = createRoot(rootElement);
 
-ReactDom.render(
+root.render(
     <Provider store={store}>
         <AStarApp />
-    </Provider>,
-    rootElement
+    </Provider>
 )
