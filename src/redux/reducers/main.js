@@ -7,7 +7,7 @@ import * as R from "ramda";
 import { emptyTable, startUpTable } from "../../algorithm/control";
 
 const tableWidth = 12;
-const tableHeight = 7;
+const tableHeight = 9;
 
 const initialState = {
     table: startUpTable(),
@@ -51,6 +51,12 @@ const main = (state = initialState, action) => {
             return {
                 ...state,
                 stepState: stepState.INIT,
+                openNodes: [],
+                closedNodes: [],
+                startPosition: [-1,-1],
+                endPosition: [-1,-1],
+                currentPosition: [-1,-1],
+                stepInfo: "Astar ready!",
                 mode: action.payload.mode === modes.EDIT ? modes.RUN : modes.EDIT
             };
         case NEXT_STEP:

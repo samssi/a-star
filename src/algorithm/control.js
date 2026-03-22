@@ -37,7 +37,11 @@ export const searchTable = (table, objectType) => {
 
 export const updateNodesToTable = (table, nodes) => {
     const newTable = R.clone(table);
-    R.forEach(node => mutateCell(newTable, node.x, node.y, node.object), nodes);
+    R.forEach(node => {
+        if (newTable[node.y][node.x].value !== END.value) {
+            mutateCell(newTable, node.x, node.y, node.object);
+        }
+    }, nodes);
     return newTable;
 };
 
@@ -111,14 +115,14 @@ export const surroundingCells = (table, closedNodes, position) => {
     return R.reject(R.isNil, cells);
 };
 
-const outOfBoundsRule = (position) => (position[0] < 0 || position [1] < 0);
-const occupyRule = (table, position) => R.includes(table[position[1]][position[0]].value, [OBSTACLE.value, START.value, END.value]);
+const outOfBoundsRule = (table, position) => (position[0] < 0 || position[1] < 0 || position[1] >= table.length || position[0] >= table[0].length);
+const occupyRule = (table, position) => R.includes(table[position[1]][position[0]].value, [OBSTACLE.value, START.value]);
 const closedRule = (closedNodes, position) => {
-
+    return R.any(node => node.x === position[0] && node.y === position[1], closedNodes);
 };
 
 const withPickUpRules = (table, closedNodes, position) => {
-    if (outOfBoundsRule(position) || occupyRule(table, position) || closedRule(closedNodes, position)) {
+    if (outOfBoundsRule(table, position) || occupyRule(table, position) || closedRule(closedNodes, position)) {
         return undefined;
     }
     return position;
